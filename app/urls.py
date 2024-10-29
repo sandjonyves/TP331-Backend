@@ -1,15 +1,13 @@
-from django.urls import path,include
-from .views import *
-from rest_framework import routers
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import CartViewSet, ClasseViewSet, SchoolViewSet, StudentViewSet
 
-route =routers.SimpleRouter()
+router = DefaultRouter()
+router.register(r'schools', SchoolViewSet)
+router.register(r'classes', ClasseViewSet)
+router.register(r'students', StudentViewSet)
+router.register(r'Carts',CartViewSet)
 
-
-
-urlpatterns =[
-
-    
-    path('',include(route.urls)),
-
-
+urlpatterns = [
+    path('', include(router.urls)),
 ]

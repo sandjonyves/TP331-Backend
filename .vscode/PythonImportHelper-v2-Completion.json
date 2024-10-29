@@ -242,7 +242,23 @@
         "documentation": {}
     },
     {
-        "label": "routers",
+        "label": "serializers",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "viewsets",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "status",
         "importPath": "rest_framework",
         "description": "rest_framework",
         "isExtraImport": true,
@@ -515,6 +531,14 @@
         "documentation": {}
     },
     {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
         "label": "HTTP_404_NOT_FOUND",
         "importPath": "rest_framework.status",
         "description": "rest_framework.status",
@@ -544,14 +568,6 @@
         "description": "django.test",
         "isExtraImport": true,
         "detail": "django.test",
-        "documentation": {}
-    },
-    {
-        "label": "render",
-        "importPath": "django.shortcuts",
-        "description": "django.shortcuts",
-        "isExtraImport": true,
-        "detail": "django.shortcuts",
         "documentation": {}
     },
     {
@@ -624,6 +640,14 @@
         "description": "rest_framework_simplejwt.tokens",
         "isExtraImport": true,
         "detail": "rest_framework_simplejwt.tokens",
+        "documentation": {}
+    },
+    {
+        "label": "DefaultRouter",
+        "importPath": "rest_framework.routers",
+        "description": "rest_framework.routers",
+        "isExtraImport": true,
+        "detail": "rest_framework.routers",
         "documentation": {}
     },
     {
@@ -1018,8 +1042,125 @@
         "kind": 6,
         "importPath": "app.models",
         "description": "app.models",
-        "peekOfCode": "class School(models.Model):\n    school_name = models.CharField(max_length=128)\n# class",
+        "peekOfCode": "class School(models.Model):\n    school_name = models.CharField(max_length=128)\n    def __str__(self):\n        return self.school_name\nclass Classe(models.Model):\n    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='classe')\n    name = models.CharField(max_length=255)\nclass Student(models.Model):\n    classe = models.ForeignKey(Classe,on_delete=models.CASCADE,related_name='students')\n    matricule = models.CharField(max_length=255,unique=True)",
         "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "Classe",
+        "kind": 6,
+        "importPath": "app.models",
+        "description": "app.models",
+        "peekOfCode": "class Classe(models.Model):\n    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='classe')\n    name = models.CharField(max_length=255)\nclass Student(models.Model):\n    classe = models.ForeignKey(Classe,on_delete=models.CASCADE,related_name='students')\n    matricule = models.CharField(max_length=255,unique=True)\n    name = models.CharField(max_length=255)\n    date_of_birth = models.DateField()\n    grade = models.CharField(max_length=10)\n    def __str__(self):",
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "Student",
+        "kind": 6,
+        "importPath": "app.models",
+        "description": "app.models",
+        "peekOfCode": "class Student(models.Model):\n    classe = models.ForeignKey(Classe,on_delete=models.CASCADE,related_name='students')\n    matricule = models.CharField(max_length=255,unique=True)\n    name = models.CharField(max_length=255)\n    date_of_birth = models.DateField()\n    grade = models.CharField(max_length=10)\n    def __str__(self):\n        return self.name\nclass Cart(models.Model):\n    student = models.ForeignKey(Student,on_delete=models.CASCADE,related_name='student')",
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "Cart",
+        "kind": 6,
+        "importPath": "app.models",
+        "description": "app.models",
+        "peekOfCode": "class Cart(models.Model):\n    student = models.ForeignKey(Student,on_delete=models.CASCADE,related_name='student')\n    image = models.ImageField(upload_to='student/images')",
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "SchoolSerializer",
+        "kind": 6,
+        "importPath": "app.serializers",
+        "description": "app.serializers",
+        "peekOfCode": "class SchoolSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = School\n        fields = '__all__'\nclass ClasseSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Classe\n        fields = '__all__'\nclass StudentSerializer(serializers.ModelSerializer):\n    class Meta:",
+        "detail": "app.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "ClasseSerializer",
+        "kind": 6,
+        "importPath": "app.serializers",
+        "description": "app.serializers",
+        "peekOfCode": "class ClasseSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Classe\n        fields = '__all__'\nclass StudentSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Student\n        fields = '__all__'\nclass CartSerializer(serializers.ModelSerializer):\n    class Meta:",
+        "detail": "app.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "StudentSerializer",
+        "kind": 6,
+        "importPath": "app.serializers",
+        "description": "app.serializers",
+        "peekOfCode": "class StudentSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Student\n        fields = '__all__'\nclass CartSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Cart\n        fields = '__all__'",
+        "detail": "app.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "CartSerializer",
+        "kind": 6,
+        "importPath": "app.serializers",
+        "description": "app.serializers",
+        "peekOfCode": "class CartSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Cart\n        fields = '__all__'",
+        "detail": "app.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "router",
+        "kind": 5,
+        "importPath": "app.urls",
+        "description": "app.urls",
+        "peekOfCode": "router = DefaultRouter()\nrouter.register(r'schools', SchoolViewSet)\nrouter.register(r'classes', ClasseViewSet)\nrouter.register(r'students', StudentViewSet)\nrouter.register(r'Carts',CartViewSet)\nurlpatterns = [\n    path('', include(router.urls)),\n]",
+        "detail": "app.urls",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "app.urls",
+        "description": "app.urls",
+        "peekOfCode": "urlpatterns = [\n    path('', include(router.urls)),\n]",
+        "detail": "app.urls",
+        "documentation": {}
+    },
+    {
+        "label": "SchoolViewSet",
+        "kind": 6,
+        "importPath": "app.views",
+        "description": "app.views",
+        "peekOfCode": "class SchoolViewSet(viewsets.ModelViewSet):\n    queryset = School.objects.all()\n    serializer_class = SchoolSerializer\nclass ClasseViewSet(viewsets.ModelViewSet):\n    queryset = Classe.objects.all()\n    serializer_class = ClasseSerializer\nclass StudentViewSet(viewsets.ModelViewSet):\n    queryset = Student.objects.all()\n    serializer_class = StudentSerializer\nclass CartViewSet(viewsets.ModelViewSet):",
+        "detail": "app.views",
+        "documentation": {}
+    },
+    {
+        "label": "ClasseViewSet",
+        "kind": 6,
+        "importPath": "app.views",
+        "description": "app.views",
+        "peekOfCode": "class ClasseViewSet(viewsets.ModelViewSet):\n    queryset = Classe.objects.all()\n    serializer_class = ClasseSerializer\nclass StudentViewSet(viewsets.ModelViewSet):\n    queryset = Student.objects.all()\n    serializer_class = StudentSerializer\nclass CartViewSet(viewsets.ModelViewSet):\n    queryset = Cart.objects.all()\n    serializer_class = CartSerializer\n    def create(self, request, *args, **kwargs):",
+        "detail": "app.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentViewSet",
+        "kind": 6,
+        "importPath": "app.views",
+        "description": "app.views",
+        "peekOfCode": "class StudentViewSet(viewsets.ModelViewSet):\n    queryset = Student.objects.all()\n    serializer_class = StudentSerializer\nclass CartViewSet(viewsets.ModelViewSet):\n    queryset = Cart.objects.all()\n    serializer_class = CartSerializer\n    def create(self, request, *args, **kwargs):\n        matricule = request.data.get('matricule')\n        student_instance = Student.objects.filter(matricule=matricule).first()\n        request.data['student'] = student_instance",
+        "detail": "app.views",
+        "documentation": {}
+    },
+    {
+        "label": "CartViewSet",
+        "kind": 6,
+        "importPath": "app.views",
+        "description": "app.views",
+        "peekOfCode": "class CartViewSet(viewsets.ModelViewSet):\n    queryset = Cart.objects.all()\n    serializer_class = CartSerializer\n    def create(self, request, *args, **kwargs):\n        matricule = request.data.get('matricule')\n        student_instance = Student.objects.filter(matricule=matricule).first()\n        request.data['student'] = student_instance\n        if not student_instance:\n            return Response({'error': 'Student not found.'}, status=status.HTTP_404_NOT_FOUND)\n        serializer = self.get_serializer(data=request.data)",
+        "detail": "app.views",
         "documentation": {}
     },
     {
