@@ -114,6 +114,14 @@
         "documentation": {}
     },
     {
+        "label": "reverse",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
         "label": "path",
         "importPath": "django.urls",
         "description": "django.urls",
@@ -242,6 +250,14 @@
         "documentation": {}
     },
     {
+        "label": "status",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
         "label": "serializers",
         "importPath": "rest_framework",
         "description": "rest_framework",
@@ -332,6 +348,46 @@
     },
     {
         "label": "transaction",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
         "importPath": "django.db",
         "description": "django.db",
         "isExtraImport": true,
@@ -539,6 +595,14 @@
         "documentation": {}
     },
     {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
         "label": "HTTP_404_NOT_FOUND",
         "importPath": "rest_framework.status",
         "description": "rest_framework.status",
@@ -595,6 +659,22 @@
         "documentation": {}
     },
     {
+        "label": "APIView",
+        "importPath": "rest_framework.views",
+        "description": "rest_framework.views",
+        "isExtraImport": true,
+        "detail": "rest_framework.views",
+        "documentation": {}
+    },
+    {
+        "label": "APIView",
+        "importPath": "rest_framework.views",
+        "description": "rest_framework.views",
+        "isExtraImport": true,
+        "detail": "rest_framework.views",
+        "documentation": {}
+    },
+    {
         "label": "BasicAuthentication",
         "importPath": "rest_framework.authentication",
         "description": "rest_framework.authentication",
@@ -627,6 +707,14 @@
         "documentation": {}
     },
     {
+        "label": "AllowAny",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
         "label": "action",
         "importPath": "rest_framework.decorators",
         "description": "rest_framework.decorators",
@@ -643,11 +731,54 @@
         "documentation": {}
     },
     {
+        "label": "django.db.models.deletion",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "django.db.models.deletion",
+        "description": "django.db.models.deletion",
+        "detail": "django.db.models.deletion",
+        "documentation": {}
+    },
+    {
+        "label": "csv",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "csv",
+        "description": "csv",
+        "detail": "csv",
+        "documentation": {}
+    },
+    {
+        "label": "io",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "io",
+        "description": "io",
+        "detail": "io",
+        "documentation": {}
+    },
+    {
         "label": "DefaultRouter",
         "importPath": "rest_framework.routers",
         "description": "rest_framework.routers",
         "isExtraImport": true,
         "detail": "rest_framework.routers",
+        "documentation": {}
+    },
+    {
+        "label": "AllowAny",
+        "importPath": "rest_framework.permissions ",
+        "description": "rest_framework.permissions ",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions ",
+        "documentation": {}
+    },
+    {
+        "label": "action",
+        "importPath": "rest_framework.decorators ",
+        "description": "rest_framework.decorators ",
+        "isExtraImport": true,
+        "detail": "rest_framework.decorators ",
         "documentation": {}
     },
     {
@@ -952,7 +1083,7 @@
         "kind": 6,
         "importPath": "account.models",
         "description": "account.models",
-        "peekOfCode": "class CustomUserManager(BaseUserManager):\n    def _create_user(self, email, password=None, **extra_fields):\n        if not email:\n            raise ValueError('Le email ou l\\'email doit être spécifié.')\n        if '@' in email:  # Assuming it's an email\n            user = self.model(email=email, **extra_fields)\n        else:  # It's a email\n            user = self.model(email=email, **extra_fields)\n        user.set_password(password)\n        user.save(using=self._db)",
+        "peekOfCode": "class CustomUserManager(BaseUserManager):\n    def _create_user(self, email, password=None, **extra_fields):\n        if not email:\n            raise ValueError('Le email ou l\\'email doit être spécifié.')\n        if '@' in email: \n            user = self.model(email=email, **extra_fields)\n        else: \n            user = self.model(email=email, **extra_fields)\n        user.set_password(password)\n        user.save(using=self._db)",
         "detail": "account.models",
         "documentation": {}
     },
@@ -961,7 +1092,7 @@
         "kind": 6,
         "importPath": "account.models",
         "description": "account.models",
-        "peekOfCode": "class CustomUser(AbstractBaseUser, PermissionsMixin):\n    email = models.EmailField(unique=True, blank=True, null=True)\n    username = models.CharField(max_length=255, blank=True, null=True)\n    is_staff = models.BooleanField(default=False)\n    is_active = models.BooleanField(default=True)\n    date_joined = models.DateTimeField(default=timezone.now)\n    objects = CustomUserManager()\n    USERNAME_FIELD = 'email' # Pour les étudiants et les marchands\n    REQUIRED_FIELDS = ['username']  # Peut être vide pour les admins",
+        "peekOfCode": "class CustomUser(AbstractBaseUser, PermissionsMixin):\n    email = models.EmailField(unique=True, blank=True, null=True)\n    username = models.CharField(max_length=255, blank=True, null=True)\n    is_staff = models.BooleanField(default=False)\n    is_active = models.BooleanField(default=True)\n    date_joined = models.DateTimeField(default=timezone.now)\n    objects = CustomUserManager()\n    USERNAME_FIELD = 'email' \n    REQUIRED_FIELDS = ['username']",
         "detail": "account.models",
         "documentation": {}
     },
@@ -1029,6 +1160,42 @@
         "documentation": {}
     },
     {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "app.migrations.0002_rename_school_name_school_name_school_contact_and_more",
+        "description": "app.migrations.0002_rename_school_name_school_name_school_contact_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('app', '0001_initial'),\n    ]\n    operations = [\n        migrations.RenameField(\n            model_name='school',\n            old_name='school_name',\n            new_name='name',\n        ),",
+        "detail": "app.migrations.0002_rename_school_name_school_name_school_contact_and_more",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "app.migrations.0003_rename_firstname_student_firstname",
+        "description": "app.migrations.0003_rename_firstname_student_firstname",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('app', '0002_rename_school_name_school_name_school_contact_and_more'),\n    ]\n    operations = [\n        migrations.RenameField(\n            model_name='student',\n            old_name='firstNAme',\n            new_name='firstName',\n        ),",
+        "detail": "app.migrations.0003_rename_firstname_student_firstname",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "app.migrations.0004_alter_cart_student",
+        "description": "app.migrations.0004_alter_cart_student",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('app', '0003_rename_firstname_student_firstname'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='cart',\n            name='student',\n            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='student', to='app.student'),\n        ),",
+        "detail": "app.migrations.0004_alter_cart_student",
+        "documentation": {}
+    },
+    {
+        "label": "CustomStudentView",
+        "kind": 6,
+        "importPath": "app.CustomerView",
+        "description": "app.CustomerView",
+        "peekOfCode": "class CustomStudentView(APIView):\n    permission_classes = [AllowAny]\n    def post(self, request):\n        print(Student.objects.filter(id=1))\n        # Vérifiez si le fichier est fourni dans la requête\n        csv_file = request.FILES.get('file')\n        if not csv_file:\n            return Response({\"error\": \"Aucun fichier n'a été fourni.\"}, status=status.HTTP_400_BAD_REQUEST)\n        # Vérifiez que le fichier a une extension CSV\n        if not csv_file.name.endswith('.csv'):",
+        "detail": "app.CustomerView",
+        "documentation": {}
+    },
+    {
         "label": "AppConfig",
         "kind": 6,
         "importPath": "app.apps",
@@ -1042,7 +1209,7 @@
         "kind": 6,
         "importPath": "app.models",
         "description": "app.models",
-        "peekOfCode": "class School(models.Model):\n    school_name = models.CharField(max_length=128)\n    def __str__(self):\n        return self.school_name\nclass Classe(models.Model):\n    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='classe')\n    name = models.CharField(max_length=255)\nclass Student(models.Model):\n    classe = models.ForeignKey(Classe,on_delete=models.CASCADE,related_name='students')\n    matricule = models.CharField(max_length=255,unique=True)",
+        "peekOfCode": "class School(models.Model):\n    name = models.CharField(max_length=128)\n    devise = models.CharField(max_length=255)\n    contact = models.CharField(max_length=255)\n    logo = models.TextField()\n    # academic_year = models.DateField()\n    def __str__(self):\n        return self.name\nclass Classe(models.Model):\n    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='classe')",
         "detail": "app.models",
         "documentation": {}
     },
@@ -1051,7 +1218,7 @@
         "kind": 6,
         "importPath": "app.models",
         "description": "app.models",
-        "peekOfCode": "class Classe(models.Model):\n    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='classe')\n    name = models.CharField(max_length=255)\nclass Student(models.Model):\n    classe = models.ForeignKey(Classe,on_delete=models.CASCADE,related_name='students')\n    matricule = models.CharField(max_length=255,unique=True)\n    name = models.CharField(max_length=255)\n    date_of_birth = models.DateField()\n    grade = models.CharField(max_length=10)\n    def __str__(self):",
+        "peekOfCode": "class Classe(models.Model):\n    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='classe')\n    name = models.CharField(max_length=255)\n    def __str__(self):\n        return self.name\nclass Student(models.Model):\n    classe = models.ForeignKey(Classe,on_delete=models.CASCADE,related_name='students')\n    matricule = models.CharField(max_length=255,unique=True)\n    firstName = models.CharField(max_length=255)\n    lastName = models.CharField(max_length=255)",
         "detail": "app.models",
         "documentation": {}
     },
@@ -1060,7 +1227,7 @@
         "kind": 6,
         "importPath": "app.models",
         "description": "app.models",
-        "peekOfCode": "class Student(models.Model):\n    classe = models.ForeignKey(Classe,on_delete=models.CASCADE,related_name='students')\n    matricule = models.CharField(max_length=255,unique=True)\n    name = models.CharField(max_length=255)\n    date_of_birth = models.DateField()\n    grade = models.CharField(max_length=10)\n    def __str__(self):\n        return self.name\nclass Cart(models.Model):\n    student = models.ForeignKey(Student,on_delete=models.CASCADE,related_name='student')",
+        "peekOfCode": "class Student(models.Model):\n    classe = models.ForeignKey(Classe,on_delete=models.CASCADE,related_name='students')\n    matricule = models.CharField(max_length=255,unique=True)\n    firstName = models.CharField(max_length=255)\n    lastName = models.CharField(max_length=255)\n    date_of_birth = models.DateField()\n    def __str__(self):\n        return self.firstName\nclass Cart(models.Model):\n    student = models.OneToOneField(Student,on_delete=models.CASCADE,related_name='student')",
         "detail": "app.models",
         "documentation": {}
     },
@@ -1069,7 +1236,7 @@
         "kind": 6,
         "importPath": "app.models",
         "description": "app.models",
-        "peekOfCode": "class Cart(models.Model):\n    student = models.ForeignKey(Student,on_delete=models.CASCADE,related_name='student')\n    image = models.ImageField(upload_to='student/images')",
+        "peekOfCode": "class Cart(models.Model):\n    student = models.OneToOneField(Student,on_delete=models.CASCADE,related_name='student')\n    image = models.TextField()\n    def __str__(self):\n        return self.student.matricule",
         "detail": "app.models",
         "documentation": {}
     },
@@ -1078,7 +1245,7 @@
         "kind": 6,
         "importPath": "app.serializers",
         "description": "app.serializers",
-        "peekOfCode": "class SchoolSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = School\n        fields = '__all__'\nclass ClasseSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Classe\n        fields = '__all__'\nclass StudentSerializer(serializers.ModelSerializer):\n    class Meta:",
+        "peekOfCode": "class SchoolSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = School\n        fields = '__all__'\nclass ClasseSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Classe\n        fields = '__all__'\nclass StudentSerializer(serializers.ModelSerializer):\n    # classe_id = serializers.PrimaryKeyRelatedField(source='classe', write_only=True, queryset=Classe.objects.all())",
         "detail": "app.serializers",
         "documentation": {}
     },
@@ -1087,7 +1254,7 @@
         "kind": 6,
         "importPath": "app.serializers",
         "description": "app.serializers",
-        "peekOfCode": "class ClasseSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Classe\n        fields = '__all__'\nclass StudentSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Student\n        fields = '__all__'\nclass CartSerializer(serializers.ModelSerializer):\n    class Meta:",
+        "peekOfCode": "class ClasseSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Classe\n        fields = '__all__'\nclass StudentSerializer(serializers.ModelSerializer):\n    # classe_id = serializers.PrimaryKeyRelatedField(source='classe', write_only=True, queryset=Classe.objects.all())\n    classe =ClasseSerializer()\n    class Meta:\n        model = Student\n        fields = ['id', 'matricule', 'firstName', 'lastName', 'date_of_birth', 'classe_id','classe']",
         "detail": "app.serializers",
         "documentation": {}
     },
@@ -1096,7 +1263,7 @@
         "kind": 6,
         "importPath": "app.serializers",
         "description": "app.serializers",
-        "peekOfCode": "class StudentSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Student\n        fields = '__all__'\nclass CartSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Cart\n        fields = '__all__'",
+        "peekOfCode": "class StudentSerializer(serializers.ModelSerializer):\n    # classe_id = serializers.PrimaryKeyRelatedField(source='classe', write_only=True, queryset=Classe.objects.all())\n    classe =ClasseSerializer()\n    class Meta:\n        model = Student\n        fields = ['id', 'matricule', 'firstName', 'lastName', 'date_of_birth', 'classe_id','classe']\n        # read_only_fields = ['classe']\n    def create(self, validated_data):\n        classe = validated_data.pop('classe')\n        student = Student.objects.create(classe=classe, **validated_data)",
         "detail": "app.serializers",
         "documentation": {}
     },
@@ -1105,8 +1272,26 @@
         "kind": 6,
         "importPath": "app.serializers",
         "description": "app.serializers",
-        "peekOfCode": "class CartSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Cart\n        fields = '__all__'",
+        "peekOfCode": "class CartSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Cart\n        fields = '__all__'\nclass CustomUserSerializer(serializers.Serializer):\n    file = serializers.FileField()",
         "detail": "app.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "CustomUserSerializer",
+        "kind": 6,
+        "importPath": "app.serializers",
+        "description": "app.serializers",
+        "peekOfCode": "class CustomUserSerializer(serializers.Serializer):\n    file = serializers.FileField()",
+        "detail": "app.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "CustomStudentViewTests",
+        "kind": 6,
+        "importPath": "app.tests",
+        "description": "app.tests",
+        "peekOfCode": "class CustomStudentViewTests(TestCase):\n    def test_upload_csv(self):\n        url = reverse('students_registers') \n        with open('/home/shooter/Downloads/students_data.csv', 'rb') as file:\n            response = self.client.post(url, {'file': file}, format='multipart')\n        self.assertEqual(response.status_code, 201) \n        self.assertIn(\"Fichier CSV traité avec succès.\", response.content.decode('utf-8'))  # Décodez le contenu",
+        "detail": "app.tests",
         "documentation": {}
     },
     {
@@ -1114,7 +1299,7 @@
         "kind": 5,
         "importPath": "app.urls",
         "description": "app.urls",
-        "peekOfCode": "router = DefaultRouter()\nrouter.register(r'schools', SchoolViewSet)\nrouter.register(r'classes', ClasseViewSet)\nrouter.register(r'students', StudentViewSet)\nrouter.register(r'Carts',CartViewSet)\nurlpatterns = [\n    path('', include(router.urls)),\n]",
+        "peekOfCode": "router = DefaultRouter()\nrouter.register(r'schools', SchoolViewSet)\nrouter.register(r'classes', ClasseViewSet)\nrouter.register(r'students', StudentViewSet)\nrouter.register(r'carts',CartViewSet)\nurlpatterns = [\n    path('students/registers/',CustomStudentView.as_view(),name='students_register'),\n    path('', include(router.urls)),\n]",
         "detail": "app.urls",
         "documentation": {}
     },
@@ -1123,7 +1308,7 @@
         "kind": 5,
         "importPath": "app.urls",
         "description": "app.urls",
-        "peekOfCode": "urlpatterns = [\n    path('', include(router.urls)),\n]",
+        "peekOfCode": "urlpatterns = [\n    path('students/registers/',CustomStudentView.as_view(),name='students_register'),\n    path('', include(router.urls)),\n]",
         "detail": "app.urls",
         "documentation": {}
     },
@@ -1132,7 +1317,7 @@
         "kind": 6,
         "importPath": "app.views",
         "description": "app.views",
-        "peekOfCode": "class SchoolViewSet(viewsets.ModelViewSet):\n    queryset = School.objects.all()\n    serializer_class = SchoolSerializer\nclass ClasseViewSet(viewsets.ModelViewSet):\n    queryset = Classe.objects.all()\n    serializer_class = ClasseSerializer\nclass StudentViewSet(viewsets.ModelViewSet):\n    queryset = Student.objects.all()\n    serializer_class = StudentSerializer\nclass CartViewSet(viewsets.ModelViewSet):",
+        "peekOfCode": "class SchoolViewSet(viewsets.ModelViewSet):\n    permission_classes = [AllowAny]\n    queryset = School.objects.all()\n    serializer_class = SchoolSerializer\nclass ClasseViewSet(viewsets.ModelViewSet):\n    permission_classes = [AllowAny]\n    queryset = Classe.objects.all()\n    serializer_class = ClasseSerializer\nclass StudentViewSet(viewsets.ModelViewSet):\n    queryset = Student.objects.all()",
         "detail": "app.views",
         "documentation": {}
     },
@@ -1141,7 +1326,7 @@
         "kind": 6,
         "importPath": "app.views",
         "description": "app.views",
-        "peekOfCode": "class ClasseViewSet(viewsets.ModelViewSet):\n    queryset = Classe.objects.all()\n    serializer_class = ClasseSerializer\nclass StudentViewSet(viewsets.ModelViewSet):\n    queryset = Student.objects.all()\n    serializer_class = StudentSerializer\nclass CartViewSet(viewsets.ModelViewSet):\n    queryset = Cart.objects.all()\n    serializer_class = CartSerializer\n    def create(self, request, *args, **kwargs):",
+        "peekOfCode": "class ClasseViewSet(viewsets.ModelViewSet):\n    permission_classes = [AllowAny]\n    queryset = Classe.objects.all()\n    serializer_class = ClasseSerializer\nclass StudentViewSet(viewsets.ModelViewSet):\n    queryset = Student.objects.all()\n    serializer_class = StudentSerializer\n    permission_classes = [AllowAny]\n    # @action(detail=False, methods=['post'], url_path='registers')\n    # def post(self, request):",
         "detail": "app.views",
         "documentation": {}
     },
@@ -1150,7 +1335,7 @@
         "kind": 6,
         "importPath": "app.views",
         "description": "app.views",
-        "peekOfCode": "class StudentViewSet(viewsets.ModelViewSet):\n    queryset = Student.objects.all()\n    serializer_class = StudentSerializer\nclass CartViewSet(viewsets.ModelViewSet):\n    queryset = Cart.objects.all()\n    serializer_class = CartSerializer\n    def create(self, request, *args, **kwargs):\n        matricule = request.data.get('matricule')\n        student_instance = Student.objects.filter(matricule=matricule).first()\n        request.data['student'] = student_instance",
+        "peekOfCode": "class StudentViewSet(viewsets.ModelViewSet):\n    queryset = Student.objects.all()\n    serializer_class = StudentSerializer\n    permission_classes = [AllowAny]\n    # @action(detail=False, methods=['post'], url_path='registers')\n    # def post(self, request):\n    #     print(Classe.objects.filter(id=1))\n    #     # Vérifiez si le fichier est fourni dans la requête\n    #     csv_file = request.FILES.get('file')\n    #     if not csv_file:",
         "detail": "app.views",
         "documentation": {}
     },
@@ -1159,7 +1344,16 @@
         "kind": 6,
         "importPath": "app.views",
         "description": "app.views",
-        "peekOfCode": "class CartViewSet(viewsets.ModelViewSet):\n    queryset = Cart.objects.all()\n    serializer_class = CartSerializer\n    def create(self, request, *args, **kwargs):\n        matricule = request.data.get('matricule')\n        student_instance = Student.objects.filter(matricule=matricule).first()\n        request.data['student'] = student_instance\n        if not student_instance:\n            return Response({'error': 'Student not found.'}, status=status.HTTP_404_NOT_FOUND)\n        serializer = self.get_serializer(data=request.data)",
+        "peekOfCode": "class CartViewSet(viewsets.ModelViewSet):\n    permission_classes = [AllowAny]\n    queryset = Cart.objects.all()\n    serializer_class = CartSerializer\n    # def create(self, request, *args, **kwargs):\n    #     matricule = request.data.get('matricule')\n    #     student_instance = Student.objects.filter(matricule=matricule).first()\n    #     request.data['student'] = student_instance\n    #     if not student_instance:\n    #         return Response({'error': 'Student not found.'}, status=status.HTTP_404_NOT_FOUND)",
+        "detail": "app.views",
+        "documentation": {}
+    },
+    {
+        "label": "CustomStudentView",
+        "kind": 6,
+        "importPath": "app.views",
+        "description": "app.views",
+        "peekOfCode": "class CustomStudentView(viewsets.generics.CreateAPIView):\n    permission_classes = [AllowAny]\n    serializer_class = CustomUserSerializer\n    def post(self, request):\n        print(Student.objects.filter(id=1))\n        # Vérifiez si le fichier est fourni dans la requête\n        csv_file = request.FILES.get('file')\n        if not csv_file:\n            return Response({\"error\": \"Aucun fichier n'a été fourni.\"}, status=status.HTTP_400_BAD_REQUEST)\n        # Vérifiez que le fichier a une extension CSV",
         "detail": "app.views",
         "documentation": {}
     },

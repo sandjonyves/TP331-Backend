@@ -8,9 +8,9 @@ class CustomUserManager(BaseUserManager):
         if not email:
             raise ValueError('Le email ou l\'email doit être spécifié.')
         
-        if '@' in email:  # Assuming it's an email
+        if '@' in email: 
             user = self.model(email=email, **extra_fields)
-        else:  # It's a email
+        else: 
             user = self.model(email=email, **extra_fields)
 
         user.set_password(password)
@@ -37,7 +37,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     objects = CustomUserManager()
 
-    USERNAME_FIELD = 'email' # Pour les étudiants et les marchands
-    REQUIRED_FIELDS = ['username']  # Peut être vide pour les admins
+    USERNAME_FIELD = 'email' 
+    REQUIRED_FIELDS = ['username']  
 
 

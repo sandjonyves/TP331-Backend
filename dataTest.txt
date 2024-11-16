@@ -1,0 +1,9 @@
+
+
+{
+  "classe_id": 1,
+  "matricule": "MATH001",
+  "firstNAme": "Alice",
+  "lastName": "Dupont",
+  "date_of_birth": "2005-04-12"
+}
