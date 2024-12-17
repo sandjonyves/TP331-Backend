@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import School, Classe, Student ,Cart,CardPrototype
+from .models import School, Classe, Student ,Card,CardPrototype
 class SchoolSerializer(serializers.ModelSerializer):
     class Meta:
         model = School
@@ -25,9 +25,9 @@ class StudentSerializer(serializers.ModelSerializer):
     #     student = Student.objects.create(classe=classe, **validated_data)
     #     return student
 
-class CartSerializer(serializers.ModelSerializer):
+class CardSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Cart
+        model = Card
         fields = '__all__'
 
 
@@ -41,5 +41,5 @@ class CustomUserSerializer(serializers.Serializer):
     file = serializers.FileField()
 
 
-class CartGenerateSerializer(serializers.Serializer):
+class CardGenerateSerializer(serializers.Serializer):
     template_name =  serializers.CharField()

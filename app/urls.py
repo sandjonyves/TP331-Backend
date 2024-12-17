@@ -1,8 +1,8 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import  CustomStudentView, CartViewSet, ClasseViewSet, SchoolViewSet, StudentViewSet,RenderPDFView,CardPrototypeView
+from .views import  CustomStudentView, CardViewSet, ClasseViewSet, SchoolViewSet, StudentViewSet,RenderPDFView,CardPrototypeView
 # from django.confurls import url
-from wkhtmltopdf.views import PDFTemplateView
+# from wkhtmltopdf.views import PDFTemplateView
 
 
 
@@ -11,7 +11,7 @@ router = DefaultRouter()
 router.register(r'schools', SchoolViewSet)
 router.register(r'classes', ClasseViewSet)
 router.register(r'students', StudentViewSet)
-router.register(r'carts',CartViewSet)
+router.register(r'cards',CardViewSet)
 router.register(r'prototype',CardPrototypeView)
 # router.register(r'pdf',RenderPDFView,basename='test')
 

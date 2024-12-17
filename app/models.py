@@ -38,9 +38,9 @@ class Student(models.Model):
         return f"{self.firstName} {self.lastName}" 
 
 
-class Cart(models.Model):
+class Card(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='carts')  # Correction du related_name
-    cart_file = models.FileField(upload_to='card/')  
+    card_file = models.FileField(upload_to='card/')  
 
     def __str__(self):
         return self.student.matricule

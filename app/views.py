@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from  rest_framework.permissions  import AllowAny
-from .models import Cart, Classe, School, Student,CardPrototype
-from .serializers import (CartSerializer, ClasseSerializer, CustomUserSerializer, SchoolSerializer,CardPrototypeSerializer,StudentSerializer)
+from .models import Card, Classe, School, Student,CardPrototype
+from .serializers import (CardSerializer, ClasseSerializer, CustomUserSerializer, SchoolSerializer,CardPrototypeSerializer,StudentSerializer)
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators  import action
@@ -90,10 +90,10 @@ class StudentViewSet(viewsets.ModelViewSet):
 
 
 
-class CartViewSet(viewsets.ModelViewSet):
+class CardViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
-    queryset = Cart.objects.all()
-    serializer_class = CartSerializer
+    queryset = Card.objects.all()
+    serializer_class = CardSerializer
 
     # def create(self, request, *args, **kwargs):
     #     matricule = request.data.get('matricule')
@@ -248,7 +248,7 @@ class RenderPDFView(APIView):
         # Définir le CSS pour le PDF
         css = CSS(string='''
             @page {
-                size: 85.6mm 54mm; /* Taille d'une carte d'identité */
+                size: 85.6mm 54mm; /* Taille d'une carde d'identité */
                 margin: 0; /* Pas de marges pour correspondre exactement à la taille */
             }
         ''')
@@ -259,13 +259,13 @@ class RenderPDFView(APIView):
 
         # Enregistrer le PDF sur le serveur
         fs = FileSystemStorage()
-        pdf_filename = f'carte_{student_id}.pdf'
+        pdf_filename = f'carde_{student_id}.pdf'
         pdf_path = fs.save(pdf_filename, ContentFile(pdf))
         pdf_url = fs.url(pdf_path)
 
-        # Enregistrer dans la table Cart
-        cart = Cart(student=student, cart_file=pdf_url)
-        cart.save()
+        # Enregistrer dans la table Card
+        card = Card(student=student, card_file=pdf_url)
+        card.save()
 
         # Mettre à jour l'image de l'étudiant
         student.image_url = image_url
