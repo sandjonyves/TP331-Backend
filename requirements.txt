@@ -19,6 +19,7 @@ djangorestframework-simplejwt==5.3.1
 drf-yasg==1.21.8
 environ==1.0
 fonttools==4.55.3
+gunicorn==23.0.0
 idna==3.10
 inflection==0.5.1
 itypes==1.2.0
