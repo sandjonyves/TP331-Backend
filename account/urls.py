@@ -13,6 +13,6 @@ urlpatterns =[
     path('',include(route.urls)),
 
 
-    path('login',UserLogin.as_view(),name='login'),
+    path('login/',UserLogin.as_view(),name='login'),
     path('logout/<id>',Logout.as_view(),name='logout'),
 ]

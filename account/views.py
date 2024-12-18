@@ -134,6 +134,9 @@ class UserLogin(APIView):
         login(request, user)
         
         token = RefreshToken.for_user(user)
+        token['id'] = user.id
+        token['email']  = user.email
+        token['username'] = user.username
         response_data = {
             'id': user.id,
             'refresh': str(token),

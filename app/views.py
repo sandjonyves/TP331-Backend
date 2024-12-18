@@ -193,14 +193,15 @@ class CardPrototypeView(viewsets.ModelViewSet):
     serializer_class = CardPrototypeSerializer
     permission_classes = [AllowAny]
 
-    @action(detail=True, methods=['post'], url_path='choice')
-    def choice(self, request, pk=None):
+    @action(detail=True, methods=['post'], url_path='set-choice')
+    def set_choice(self, request, pk=None):
         try:
             instance = self.get_object()
 
+            # Met à jour tous les autres objets pour désactiver le choix
             CardPrototype.objects.exclude(pk=instance.pk).update(choice=False)
 
-           
+            # Active le choix pour l'instance actuelle
             instance.choice = True
             instance.save()
 
@@ -208,24 +209,45 @@ class CardPrototypeView(viewsets.ModelViewSet):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=False, methods=['get'], url_path='get-choice')
+    def get_choice(self, request):
+        try:
+            prototype = CardPrototype.objects.get(choice=True)
+            serializer = CardPrototypeSerializer(prototype)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except CardPrototype.DoesNotExist:
+            return Response({"error": "No prototype selected as choice."}, status=status.HTTP_404_NOT_FOUND)
 
 
+
+
+
+
+from django.core.files.base import ContentFile
+from django.core.files.storage import FileSystemStorage
+from django.template.loader import render_to_string
+from django.http import JsonResponse
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from weasyprint import HTML, CSS
+from rest_framework.permissions import AllowAny
 
 class RenderPDFView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        # Récupérer le template
+        # Récupérer le template par défaut
         try:
             template_choice = CardPrototype.objects.get(choice=True)
-        except CardPrototype.DoesNotExist:  # Correction de l'exception
+        except CardPrototype.DoesNotExist:
             return Response({'error': 'Template non trouvé.'}, status=404)
 
+        # Récupérer les données de la requête
         template_name = request.data.get('template_name', f'{template_choice.id}.html')
         student_id = request.data.get('student_id')
         image_url = request.data.get('image_url')
 
-        # Vérifier les données de la requête
         if not student_id or not image_url:
             return Response(
                 {'error': 'Les champs student_id et image_url sont requis.'},
@@ -238,57 +260,56 @@ class RenderPDFView(APIView):
         except Student.DoesNotExist:
             return Response({'error': 'Étudiant non trouvé.'}, status=404)
 
+        # Récupérer la classe et l'école associées
         try:
-            student_classe = Classe.objects.get(id=student.classe.id)  # Correction de l'accès aux champs
-            student_school = School.objects.get(id=student_classe.school.id)  # Correction de l'accès aux champs
-        except (Classe.DoesNotExist, School.DoesNotExist):
+            student_classe = student.classe
+            student_school = student_classe.school
+        except AttributeError:
             return Response({'error': 'Classe ou école non trouvée.'}, status=404)
 
-      
+        # Contexte pour le rendu du PDF
         context = {
             'student_matricule': student.matricule,
             'student_firstName': student.firstName,
             'student_lastName': student.lastName,
             'student_dateOfBirth': student.date_of_birth,
             'student_sexe': student.sexe,
-            'student_imageUrl': image_url,  
+            'student_imageUrl': image_url,
             'student_classe': student_classe.name,
-            'school_logo': student_school.logo_url,  
+            'school_logo': student_school.logo_url,
             'school_name': student_school.name,
             'academic_year': student_school.academic_year,
             'school_phone': student_school.phone,
         }
 
-        # Rendre le contenu HTML
-        html_string = render_to_string(template_name, context)
-
-        # Définir le CSS pour le PDF
-        css = CSS(string='''
-            @page {
-                size: 85.6mm 54mm; /* Taille d'une carde d'identité */
-                margin: 0; /* Pas de marges pour correspondre exactement à la taille */
-            }
-        ''')
+        try:
+            # Rendre le contenu HTML
+            html_string = render_to_string(template_name, context)
+        except Exception as e:
+            return Response({'error': f"Erreur lors du rendu du template : {str(e)}"}, status=500)
 
         # Générer le PDF
+        css = CSS(string='''
+            @page {
+                size: 85.6mm 54mm; /* Taille d'une carte d'identité */
+                margin: 0; /* Pas de marges */
+            }
+        ''')
         html = HTML(string=html_string)
         pdf = html.write_pdf(stylesheets=[css])
 
-        # Enregistrer le PDF sur le serveur
+        # Enregistrer le PDF
         fs = FileSystemStorage()
         pdf_filename = f'carde_{student_id}.pdf'
         pdf_path = fs.save(pdf_filename, ContentFile(pdf))
         pdf_url = fs.url(pdf_path)
 
-        # Enregistrer dans la table Card
-        card = Card(student=student, card_file=pdf_url)
-        card.save()
-
-        # Mettre à jour l'image de l'étudiant
+        # Mettre à jour les informations de l'étudiant
+        student.card_file = pdf_url
         student.image_url = image_url
         student.save()
 
-        # Préparer la réponse
+        # Réponse
         response_data = {
             'message': 'PDF généré avec succès.',
             'pdf_url': request.build_absolute_uri(pdf_url),
@@ -301,3 +322,4 @@ class RenderPDFView(APIView):
         }
 
         return Response(response_data, status=201)
+
