@@ -10,7 +10,14 @@ class School(models.Model):
     logo_url = models.CharField(max_length=255)
     # signature = models.ImageField(upload_to='media/schools/signature/', null=True, blank=True)
     academic_year = models.CharField(max_length=128)  # Décommenter si nécessaire
-
+    # name = models.CharField(max_length=128)
+    devise = models.CharField(max_length=255)
+    contact = models.CharField(max_length=255)
+    logo = models.TextField(null=True)
+    academic_year = models.CharField(max_length=255, null=True, blank=True)
+    cachet = models.TextField(null=True)
+    signature_principale = models.TextField(null=True)
+    
     def __str__(self):
         return self.name
     
