@@ -17,7 +17,7 @@ class StudentSerializer(serializers.ModelSerializer):
     # classe =serializers.SerializerMethodField()
     class Meta:
         model = Student
-        fields = ['id', 'matricule', 'firstName', 'lastName', 'date_of_birth','classe']
+        fields ='__all__'
         # read_only_fields = ['classe']
 
     # def create(self, validated_data):
