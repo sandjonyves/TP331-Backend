@@ -1,0 +1,153 @@
+<!-- <!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carte Étudiant</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      width: 350px;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border: 1px solid #ddd;
+    }
+
+    .card-header {
+      background: linear-gradient(45deg, #007bff, #00d2ff);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .card-header .logo img {
+      max-width: 50px;
+      margin-bottom: 10px;
+    }
+
+    .card-header h1 {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .card-body {
+      display: flex;
+      padding: 15px;
+    }
+
+    .card-body .photo {
+      flex: 1;
+      text-align: center;
+    }
+
+    .card-body .photo img {
+      width: 100px;
+      height: 120px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+
+    .card-body .details {
+      flex: 2;
+      padding-left: 10px;
+    }
+
+    .card-body .details p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    .card-footer {
+      background: #f9f9f9;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+      border-top: 1px solid #ddd;
+    }
+
+    .card-footer .signature {
+      font-family: "Brush Script MT", cursive;
+      font-size: 16px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="card-header">
+      <div class="logo">
+        <img src="logo_ministere.png" alt="Logo Ministère">
+      </div>
+      <h1>Carte d'étudiant des métiers</h1>
+    </div>
+    <div class="card-body">
+      <div class="photo">
+        <img src="photo_etudiant.jpg" alt="Photo Étudiant">
+      </div>
+      <div class="details">
+        <p><strong>Nom:</strong> DUBOIS</p>
+        <p><strong>Prénom:</strong> Alice</p>
+        <p><strong>Né(e) le:</strong> 06/10/2004</p>
+        <p><strong>Validité:</strong> 01/09/2022 au 01/08/2023</p>
+      </div>
+    </div>
+    <div class="card-footer">
+      <p><strong>Signature:</strong> <span class="signature">A. Dubois</span></p>
+    </div>
+  </div>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Carte Étudiant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .card {
+            width: 85.6mm;
+            height: 54mm;
+            border: 1px solid #000;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .card-header {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .card-body {
+            margin-top: 10px;
+        }
+        .info {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">Carte Étudiant</div>
+        <div class="card-body">
+            <p class="info">Nom : {{ student_name }}</p>
+            <p class="info">ID : {{ student_id }}</p>
+            <!-- <p class="info">Université : {{ university }}</p> -->
+            <!-- <p class="info">Date : {{ date_generated }}</p> -->
+        </div>
+    </div>
+</body>
+</html>

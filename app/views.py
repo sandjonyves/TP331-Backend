@@ -1,15 +1,17 @@
 from rest_framework import viewsets
 from  rest_framework.permissions  import AllowAny
-from .models import Cart, Classe, School, Student
-from .serializers import (CartSerializer, ClasseSerializer, CustomUserSerializer, SchoolSerializer,
-    StudentSerializer)
+from .models import Card, Classe, School, Student,CardPrototype
+from .serializers import (CardSerializer, ClasseSerializer, CustomUserSerializer, SchoolSerializer,CardPrototypeSerializer,StudentSerializer)
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators  import action
 from rest_framework.views import APIView
 import csv
 import io
-
+from django.template.loader import render_to_string
+from weasyprint import HTML, CSS
+from django.core.files.base import ContentFile
+from django.core.files.storage import FileSystemStorage
 
 
 class SchoolViewSet(viewsets.ModelViewSet):
@@ -17,11 +19,22 @@ class SchoolViewSet(viewsets.ModelViewSet):
     queryset = School.objects.all()
     serializer_class = SchoolSerializer
 
+    @action(detail=False, methods=['get'], url_path='user/(?P<user_id>[^/.]+)')
+    def get_schools_by_user(self, request, user_id=None):
+        schools = self.queryset.filter(user_id=user_id)  # Filtrer les écoles par user_id
+        serializer = self.get_serializer(schools, many=True)
+        return Response(serializer.data)
+
 class ClasseViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     queryset = Classe.objects.all()
     serializer_class = ClasseSerializer
 
+    @action(detail=False, methods=['get'], url_path='school/(?P<school_id>[^/.]+)')
+    def get_classes_by_school(self, request, school_id=None):
+        classes = self.queryset.filter(school_id=school_id)  # Filtrer les classes par school_id
+        serializer = self.get_serializer(classes, many=True)
+        return Response(serializer.data)
 
 
 
@@ -29,6 +42,12 @@ class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     permission_classes = [AllowAny]
+
+    @action(detail=False, methods=['get'], url_path='classe/(?P<classe_id>[^/.]+)')
+    def get_students_by_classe(self, request, classe_id=None):
+        students = self.queryset.filter(classe_id=classe_id)  # Filtrer les étudiants par classe_id
+        serializer = self.get_serializer(students, many=True)
+        return Response(serializer.data)
 
     # @action(detail=False, methods=['post'], url_path='registers')
     # def post(self, request):
@@ -88,10 +107,10 @@ class StudentViewSet(viewsets.ModelViewSet):
 
 
 
-class CartViewSet(viewsets.ModelViewSet):
+class CardViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
-    queryset = Cart.objects.all()
-    serializer_class = CartSerializer
+    queryset = Card.objects.all()
+    serializer_class = CardSerializer
 
     # def create(self, request, *args, **kwargs):
     #     matricule = request.data.get('matricule')
@@ -113,8 +132,7 @@ class CustomStudentView(viewsets.generics.CreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = CustomUserSerializer
     def post(self, request):
-        print(Student.objects.filter(id=1))
-        # Vérifiez si le fichier est fourni dans la requête
+       
         csv_file = request.FILES.get('file')
         if not csv_file:
             return Response({"error": "Aucun fichier n'a été fourni."}, status=status.HTTP_400_BAD_REQUEST)
@@ -167,3 +185,119 @@ class CustomStudentView(viewsets.generics.CreateAPIView):
           
             print(f"Erreur lors du traitement du fichier CSV : {e}")
             return Response({"error": f"Erreur serveur : {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+class CardPrototypeView(viewsets.ModelViewSet):
+    queryset = CardPrototype.objects.all()
+    serializer_class = CardPrototypeSerializer
+    permission_classes = [AllowAny]
+
+    @action(detail=True, methods=['post'], url_path='choice')
+    def choice(self, request, pk=None):
+        try:
+            instance = self.get_object()
+
+            CardPrototype.objects.exclude(pk=instance.pk).update(choice=False)
+
+           
+            instance.choice = True
+            instance.save()
+
+            return Response({"message": "Choice successfully updated"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+class RenderPDFView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        # Récupérer le template
+        try:
+            template_choice = CardPrototype.objects.get(choice=True)
+        except CardPrototype.DoesNotExist:  # Correction de l'exception
+            return Response({'error': 'Template non trouvé.'}, status=404)
+
+        template_name = request.data.get('template_name', f'{template_choice.id}.html')
+        student_id = request.data.get('student_id')
+        image_url = request.data.get('image_url')
+
+        # Vérifier les données de la requête
+        if not student_id or not image_url:
+            return Response(
+                {'error': 'Les champs student_id et image_url sont requis.'},
+                status=400
+            )
+
+        # Récupérer les informations de l'étudiant
+        try:
+            student = Student.objects.get(id=student_id)
+        except Student.DoesNotExist:
+            return Response({'error': 'Étudiant non trouvé.'}, status=404)
+
+        try:
+            student_classe = Classe.objects.get(id=student.classe.id)  # Correction de l'accès aux champs
+            student_school = School.objects.get(id=student_classe.school.id)  # Correction de l'accès aux champs
+        except (Classe.DoesNotExist, School.DoesNotExist):
+            return Response({'error': 'Classe ou école non trouvée.'}, status=404)
+
+      
+        context = {
+            'student_matricule': student.matricule,
+            'student_firstName': student.firstName,
+            'student_lastName': student.lastName,
+            'student_dateOfBirth': student.date_of_birth,
+            'student_sexe': student.sexe,
+            'student_imageUrl': image_url,  
+            'student_classe': student_classe.name,
+            'school_logo': student_school.logo_url,  
+            'school_name': student_school.name,
+            'academic_year': student_school.academic_year,
+            'school_phone': student_school.phone,
+        }
+
+        # Rendre le contenu HTML
+        html_string = render_to_string(template_name, context)
+
+        # Définir le CSS pour le PDF
+        css = CSS(string='''
+            @page {
+                size: 85.6mm 54mm; /* Taille d'une carde d'identité */
+                margin: 0; /* Pas de marges pour correspondre exactement à la taille */
+            }
+        ''')
+
+        # Générer le PDF
+        html = HTML(string=html_string)
+        pdf = html.write_pdf(stylesheets=[css])
+
+        # Enregistrer le PDF sur le serveur
+        fs = FileSystemStorage()
+        pdf_filename = f'carde_{student_id}.pdf'
+        pdf_path = fs.save(pdf_filename, ContentFile(pdf))
+        pdf_url = fs.url(pdf_path)
+
+        # Enregistrer dans la table Card
+        card = Card(student=student, card_file=pdf_url)
+        card.save()
+
+        # Mettre à jour l'image de l'étudiant
+        student.image_url = image_url
+        student.save()
+
+        # Préparer la réponse
+        response_data = {
+            'message': 'PDF généré avec succès.',
+            'pdf_url': request.build_absolute_uri(pdf_url),
+            'student': {
+                'id': student.id,
+                'first_name': student.firstName,
+                'last_name': student.lastName,
+                'image_url': student.image_url,
+            }
+        }
+
+        return Response(response_data, status=201)
