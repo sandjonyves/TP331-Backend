@@ -1,8 +1,9 @@
 from django.db import models
-
+from account.models import CustomUser
 # Create your models here.
 
 class School(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,related_name='shool')
     name = models.CharField(max_length=128)
     # devise = models.CharField(max_length=255)
     phone = models.CharField(max_length=255)
@@ -17,7 +18,7 @@ class School(models.Model):
 
 
 class Classe(models.Model):
-    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='classes')
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='classes',null=True)
     name = models.CharField(max_length=255)
 
     def __str__(self):

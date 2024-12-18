@@ -19,11 +19,22 @@ class SchoolViewSet(viewsets.ModelViewSet):
     queryset = School.objects.all()
     serializer_class = SchoolSerializer
 
+    @action(detail=False, methods=['get'], url_path='user/(?P<user_id>[^/.]+)')
+    def get_schools_by_user(self, request, user_id=None):
+        schools = self.queryset.filter(user_id=user_id)  # Filtrer les écoles par user_id
+        serializer = self.get_serializer(schools, many=True)
+        return Response(serializer.data)
+
 class ClasseViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     queryset = Classe.objects.all()
     serializer_class = ClasseSerializer
 
+    @action(detail=False, methods=['get'], url_path='school/(?P<school_id>[^/.]+)')
+    def get_classes_by_school(self, request, school_id=None):
+        classes = self.queryset.filter(school_id=school_id)  # Filtrer les classes par school_id
+        serializer = self.get_serializer(classes, many=True)
+        return Response(serializer.data)
 
 
 
@@ -31,6 +42,12 @@ class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     permission_classes = [AllowAny]
+
+    @action(detail=False, methods=['get'], url_path='classe/(?P<classe_id>[^/.]+)')
+    def get_students_by_classe(self, request, classe_id=None):
+        students = self.queryset.filter(classe_id=classe_id)  # Filtrer les étudiants par classe_id
+        serializer = self.get_serializer(students, many=True)
+        return Response(serializer.data)
 
     # @action(detail=False, methods=['post'], url_path='registers')
     # def post(self, request):
