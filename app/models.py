@@ -38,8 +38,9 @@ class Student(models.Model):
     firstName = models.CharField(max_length=255)  
     lastName = models.CharField(max_length=255)   
     date_of_birth = models.DateField()
-    sexe = models.CharField(max_length=10)  
-    image_url = models.CharField(max_length=254)
+    sexe = models.CharField(max_length=10,null=True)  
+    image_url = models.CharField(max_length=254,null=True)
+    photos = models.TextField(null=True)
     # image = models.ImageField(upload_to='students/')
 
     def __str__(self):
