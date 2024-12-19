@@ -305,7 +305,7 @@ class RenderPDFView(APIView):
         pdf_url = fs.url(pdf_path)
 
         # Mettre à jour les informations de l'étudiant
-        student.card_file = pdf_url
+        student.card_file = pdf_path
         student.image_url = image_url
         student.save()
 
