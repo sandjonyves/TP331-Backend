@@ -91,3 +91,4 @@ class Card(models.Model):
 class CardPrototype(models.Model):
     image =models.CharField(max_length=256)
     choice = models.BooleanField(default=False)
+    # school_id = models.IntegerField(unique=True,null=True,blank=True)
