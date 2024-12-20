@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte d'identité scolaire</title>
+    <style>
+        body {
+            font-family: 'Verdana', sans-serif;
+            background-color: #f3f9ff;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .carte-scolaire {
+            width: 500px;
+            background-color: #2a4d77;
+            color: #f0f0f0;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .carte-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .carte-header h1 {
+            font-size: 18px;
+            margin: 5px 0;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+        }
+
+        .carte-header img {
+            width: 60px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .carte-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .photo-eleve img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ffcc00;
+        }
+
+        .info-eleve {
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        .info-eleve p {
+            margin: 5px 0;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        .important {
+            font-weight: bold;
+            color: #ff6600;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #d9d9d9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="carte-scolaire">
+    <div class="carte-header">
+        <img src="{% static 'logo.png' %}" alt="Logo">
+        <h1>REPUBLIQUE DU CAMEROUN<br>Paix-Travail-Patrie</h1>
+        <h2>COLLEGE POLYVALENT LA METHODE DE M.NANA</h2>
+        <h2 style="color: #ffcc00; font-family: 'Courier New', Courier, monospace;">CARTE D'IDENTITE SCOLAIRE</h2>
+    </div>
+
+    <div class="carte-body">
+        <div class="photo-eleve">
+            <img src="{{ eleve.photo_url }}" alt="Photo de l'élève">
+        </div>
+        <div class="info-eleve">
+            <p><span class="important">Année scolaire:</span> {{ eleve.annee_scolaire }}</p>
+            <p><span class="important">Nom:</span> {{ eleve.nom }}</p>
+            <p><span class="important">Prénom:</span> {{ eleve.prenom }}</p>
+            <p><span class="important">Date Naissance:</span> {{ eleve.date_naissance }}</p>
+            <p><span class="important">Matricule:</span> {{ eleve.matricule }}</p>
+            <p><span class="important">Sexe:</span> {{ eleve.sexe }}</p>
+            <p><span class="important">Classe:</span> {{ eleve.classe }}</p>
+            <p><span class="important">Lieu:</span> {{ eleve.lieu }}</p>
+            <p><span class="important">Téléphone :</span> <span style="color: #ffcc00;">{{ eleve.telephone }}</span></p>
+        </div>
+    </div>
+
+    <div class="footer">
+        Adresse: <span>--------------------------</span>
+    </div>
+</div>
+
+</body>
+</html>

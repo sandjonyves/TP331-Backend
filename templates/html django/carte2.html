@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte d'identité scolaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #f0f0f0;
+        }
+
+        .card {
+            width: 450px;
+            height: auto;
+            background: white;
+            color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        /* Style pour le logo en arrière-plan */
+        .background-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            opacity: 0.1;
+            background-image: url("{% static 'FDOcU0HK_400x400.jpg' %}"); /* À remplacer par votre image */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 1;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .school-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        .school-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .flag {
+            width: 50px;
+            height: 30px;
+            margin-left: auto;
+            background: linear-gradient(to right, 
+                #007A5E 33%, 
+                #CE1126 33%, #CE1126 66%, 
+                #FCD116 66%);
+            position: relative;
+        }
+
+        .flag::after {
+            content: "★";
+            position: absolute;
+            color: #FCD116;
+            font-size: 16px;
+            left: 42%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .title, br {
+            text-align: center;
+            font-size: 12px;
+            z-index: 2;
+            font-weight: bold;
+        }
+
+        .card-title {
+            background: #FCD116;
+            color: black;
+            text-align: center;
+            padding: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+            position: relative;
+            z-index: 2;
+        }
+
+        .photo-section {
+            display: flex;
+            gap: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .photo {
+            width: 100px;
+            height: 120px;
+            border: 1px solid #ddd;
+            background: #f8f8f8;
+            overflow: hidden;
+        }
+
+        .photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .info {
+            flex: 1;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 14px;
+            border-bottom: 1px dotted #ddd;
+            padding-bottom: 2px;
+        }
+
+        .label {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .value {
+            color: #CE1126;
+            font-weight: bold;
+        }
+
+        .address {
+            margin-top: 10px;
+            font-size: 14px;
+            position: relative;
+            z-index: 2;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <!-- Logo en arrière-plan -->
+        <div class="background-logo"></div>
+
+        <div class="header">
+            <div class="school-logo">
+                <img src="{% static 'FDOcU0HK_400x400.jpg' %}" alt="Logo école">
+            </div>
+            <div class="title">
+                REPUBLIQUE DU CAMEROUN<br>
+                Paix-Travail-Patrie<br>
+                Ministère de l'enseignement secondaire<br>
+                COLLEGE POLYVALENT LA METHODE DE<br>
+                M.NANA
+            </div>
+            <div class="flag"></div>
+        </div>
+
+        <div class="card-title">CARTE D'IDENTITE SCOLAIRE</div>
+
+        <div class="photo-section">
+            <div class="photo">
+                <img src="{% static 'images.jpeg' %}" alt="Photo d'identité">
+            </div>
+            <div class="info">
+                <div class="info-row">
+                    <span class="label">Année scolaire</span>
+                    <span class="value">{{ annee_scolaire }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Nom</span>
+                    <span class="value">{{ nom }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Prénom</span>
+                    <span class="value">{{ prenom }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Date Naissance</span>
+                    <span class="value">{{ date_naissance }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Matricule</span>
+                    <span class="value">{{ matricule }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">SEXE</span>
+                    <span class="value">{{ sexe }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Classe</span>
+                    <span class="value">{{ classe }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Lieu</span>
+                    <span class="value">{{ lieu }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="address">
+            Adresse :<br>
+            Téléphone Parent : {{ telephone_parent }}
+        </div>
+    </div>
+</body>
+</html>

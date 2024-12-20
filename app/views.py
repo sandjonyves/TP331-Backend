@@ -222,16 +222,15 @@ class CardPrototypeView(viewsets.ModelViewSet):
 
 
 
-
-
+import requests
+import time
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.template.loader import render_to_string
+from weasyprint import HTML, CSS
 from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
-from django.template.loader import render_to_string
-from django.http import JsonResponse
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from weasyprint import HTML, CSS
-from rest_framework.permissions import AllowAny
+from .models import Student, CardPrototype
 
 class RenderPDFView(APIView):
     permission_classes = [AllowAny]
@@ -244,7 +243,7 @@ class RenderPDFView(APIView):
             return Response({'error': 'Template non trouvé.'}, status=404)
 
         # Récupérer les données de la requête
-        template_name = request.data.get('template_name', f'{template_choice.id}.html')
+        template_name = request.data.get('template_name', f'3.html')
         student_id = request.data.get('student_id')
         image_url = request.data.get('image_url')
 
@@ -253,6 +252,24 @@ class RenderPDFView(APIView):
                 {'error': 'Les champs student_id et image_url sont requis.'},
                 status=400
             )
+
+        # Vérification du chargement de l'image (timer)
+        max_wait_time = 10  # Temps d'attente maximum en secondes
+        start_time = time.time()
+        image_loaded = False
+
+        while time.time() - start_time < max_wait_time:
+            try:
+                response = requests.head(image_url)
+                if response.status_code == 200:
+                    image_loaded = True
+                    break
+            except requests.RequestException:
+                pass  # Ignorer les erreurs momentanées
+            time.sleep(1)  # Attendre 1 seconde avant de réessayer
+
+        if not image_loaded:
+            return Response({'error': "L'image n'est pas accessible après 10 secondes."}, status=408)
 
         # Récupérer les informations de l'étudiant
         try:
@@ -266,7 +283,7 @@ class RenderPDFView(APIView):
             student_school = student_classe.school
         except AttributeError:
             return Response({'error': 'Classe ou école non trouvée.'}, status=404)
-
+        print(response)
         # Contexte pour le rendu du PDF
         context = {
             'student_matricule': student.matricule,
@@ -274,7 +291,7 @@ class RenderPDFView(APIView):
             'student_lastName': student.lastName,
             'student_dateOfBirth': student.date_of_birth,
             'student_sexe': student.sexe,
-            'student_imageUrl': image_url,
+            'student_imageUrl':image_url,
             'student_classe': student_classe.name,
             'school_logo': student_school.logo_url,
             'school_name': student_school.name,
@@ -291,7 +308,7 @@ class RenderPDFView(APIView):
         # Générer le PDF
         css = CSS(string='''
             @page {
-                size: 85.6mm 54mm; /* Taille d'une carte d'identité */
+                size: 95.6mm 60mm; /* Taille d'une carte d'identité */
                 margin: 0; /* Pas de marges */
             }
         ''')
@@ -323,3 +340,8 @@ class RenderPDFView(APIView):
 
         return Response(response_data, status=201)
 
+
+# {
+# "student_id":1,
+# "image_url":"https://res.cloudinary.com/dqripzmub/image/upload/v1734609398/na5zmquouwqfqbbguwm8.jpg"
+# }

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte Étudiant</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            height: 40vh;
+            width: 50vw;
+            display: flex;
+            flex-direction: column;
+            border-radius: 15px;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            background-color: #f9f9f9; /* Couleur de fond du corps de la carte */
+            overflow: hidden;
+        }
+        .header {
+            height: 25%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            border-bottom: 2px solid #ccc;
+            background-color: #007bff; /* Couleur de fond du header */
+            color: #fff; /* Couleur du texte dans le header */
+        }
+        .header div {
+            text-align: center;
+        }
+        .header .header-left,
+        .header .header-right {
+            width: 25%;
+        }
+        .header .header-center {
+            width: 50%;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .content {
+            height: 15%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5em;
+            color: #333;
+            background-color: #e9ecef;
+        }
+        .aside {
+            height: 60%;
+            display: flex;
+            padding: 10px;
+            background-color: #fff; /* Couleur de fond de l'aside */
+        }
+        .aside-left,
+        .aside-right {
+            width: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .aside-left img,
+        .aside-right img {
+            width: 80%;
+            height: auto;
+            border-radius: 50%;
+            border: 2px solid #007bff;
+        }
+        .aside-center {
+            width: 60%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 20px;
+        }
+        .article {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            font-size: 1em;
+            color: #555;
+        }
+        .article span:first-child {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <img src="{{ school_logo }}" alt="Logo de l'école" style="height: 60px;">
+            </div>
+            <div class="header-center" id="school_name">{{ school_name }}</div>
+            <div class="header-right">
+                <!-- Optionally add more information here -->
+            </div>
+        </div>
+        <div class="content">
+            Année Académique: <span id="academic_year">{{ academic_year }}</span>
+        </div>
+        <div class="aside">
+            <div class="aside-left">
+                <img src="{{ student_imageUrl }}" alt="Photo Étudiant" id="student_imageUrl">
+            </div>
+            <div class="aside-center">
+                <div class="article"><span>Nom :</span><span id="student_lastName">{{ student_lastName }}</span></div>
+                <div class="article"><span>Prénom :</span><span id="student_firstName">{{ student_firstName }}</span></div>
+                <div class="article"><span>Matricule :</span><span id="student_matricule">{{ student_matricule }}</span></div>
+                <div class="article"><span>Date de naissance :</span><span id="student_dateOfBirth">{{ student_dateOfBirth }}</span></div>
+                <div class="article"><span>Sexe :</span><span id="student_sexe">{{ student_sexe }}</span></div>
+                <div class="article"><span>Classe :</span><span id="student_classe">{{ student_classe }}</span></div>
+            </div>
+            <div class="aside-right">
+                <img src="{{ school_logo }}" alt="Logo de l'école" id="school_logo">
+            </div>
+        </div>
+        <div class="footer">
+            <span>Contact: <span id="school_phone">{{ school_phone }}</span></span>
+        </div>
+    </div>
+</body>
+</html>

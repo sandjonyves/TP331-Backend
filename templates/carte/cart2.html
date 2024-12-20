@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte d'identité scolaire</title>
+    <style>
+        body {
+            font-family: 'Verdana', sans-serif;
+            background-color: #e6f7ff;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .carte-scolaire {
+            width: 500px;
+            background-color: #1e3a5f;
+            color: #f0f0f0;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .carte-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .carte-header h1 {
+            font-size: 18px;
+            margin: 5px 0;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+        }
+
+        .carte-header img {
+            width: 60px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .carte-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .photo-eleve img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ffcc00;
+        }
+
+        .info-eleve {
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        .info-eleve p {
+            margin: 5px 0;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        .important {
+            font-weight: bold;
+            color: #ff6600;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #d9d9d9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="carte-scolaire">
+    <div class="carte-header">
+        <img src="C:\Users\JacquesLandryNgandjo\Pictures\logo2.jpg" alt="Logo">
+        <h1>REPUBLIQUE DU CAMEROUN<br>Paix-Travail-Patrie</h1>
+        <h2 style="color: #ffcc00; font-family: 'Courier New', Courier, monospace;">CARTE D'IDENTITE SCOLAIRE</h2>
+    </div>
+
+    <div class="carte-body">
+        <div class="photo-eleve">
+            <img src="C:\Users\JacquesLandryNgandjo\Pictures\fr_navigo_card.jpg" alt="Photo de l'élève">
+        </div>
+        <div class="info-eleve">
+            <p><span class="important">Année scolaire:</span> 2023/2024</p>
+            <p><span class="important">Nom:</span> EJA WILFRIED</p>
+            <p><span class="important">Prénom:</span> MERLIN WILFRIED</p>
+            <p><span class="important">Date Naissance:</span> 2010-01-05</p>
+            <p><span class="important">Matricule:</span> 3RJMW9T</p>
+            <p><span class="important">Sexe:</span> M</p>
+            <p><span class="important">Classe:</span> 3emeEsp</p>
+            <p><span class="important">Lieu:</span> LOUM</p>
+            <p><span class="important">Téléphone Parent:</span> <span style="color: #ffcc00;">671853242</span></p>
+        </div>
+    </div>
+
+    <div class="footer">
+        Adresse: <span>--------------------------</span>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte d'Identité</title>
+    <style>
+        :root {
+            --primary-color: rgb(214, 88, 4);
+            --secondary-color: rgb(153, 38, 38);
+            --accent-color: rgb(194, 92, 9);
+            --text-color-light: aliceblue;
+        }
+
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            height: auto;
+            width: 90%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+            border: 1px solid #000;
+            background-color: #fff;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--primary-color);
+            padding: 10px;
+            color: var(--text-color-light);
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--secondary-color);
+            border: 2px solid #fff;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            font-weight: bold;
+        }
+
+        .header-right {
+            text-align: right;
+            font-size: 0.9em;
+        }
+
+        .span {
+            display: block;
+        }
+
+        .aside {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px;
+            gap: 10px;
+        }
+
+        .aside-left {
+            flex: 1 1 40%;
+        }
+
+        .aside-center {
+            flex: 1 1 60%;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .article span {
+            display: inline-block;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .img-adapt {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .footer {
+            background-color: var(--accent-color);
+            padding: 10px;
+            color: var(--text-color-light);
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 600px) {
+            .aside {
+                flex-direction: column;
+            }
+
+            .header-center {
+                width: 60px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left"></div>
+            <div class="header-center">
+                Logo
+            </div>
+            <div class="header-right">
+                <span class="span">République du Cameroun</span>
+                <span class="span">Paix - Travail - Patrie</span>
+                <span class="span">Département informatique</span>
+            </div>
+        </div>
+        <div class="aside">
+            <div class="aside-left">
+                <img src="Asset/I1.jpg" class="img-adapt" alt="Photo de l'étudiant">
+            </div>
+            <div class="aside-center">
+                <div class="article"><span>Nom :</span><span>NZOMUTCHA</span></div>
+                <div class="article"><span>Prénom :</span><span>SEVERIN</span></div>
+                <div class="article"><span>Né(e) le :</span><span>1990</span></div>
+                <div class="article"><span>Classe :</span><span>TLE C</span></div>
+                <div class="article"><span>Matricule :</span><span>00000M28</span></div>
+            </div>
+        </div>
+        <div class="footer">
+            <span class="span">Adresse de l'école : Nouvelle AppData</span>
+        </div>
+    </div>
+</body>
+</html>

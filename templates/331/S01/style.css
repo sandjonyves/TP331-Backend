@@ -1,0 +1,110 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+/* il faut centrer la carte au milieu on utilise body pour que l'element soit centrer */
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+}
+/* la carte est centrer au milieu */
+
+/* container est la carte global */
+.container{
+    height: 30vh;
+    width: 60vw;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    border: 1px solid red;
+}
+/* la carte est aroundi de cote, et est automatique au redimentionnement */
+
+/* le header est le premier element de la carte qui indique les grands titres de façons general */
+.header{
+    height: 30%;
+    width: 100%;
+    border: 1px solid blue;
+}
+/* content est un sous titre qui indique le contact de l'entreprise prestataire */
+.content{
+    flex-grow: 1;
+    width: 100%;
+    border: 1px solid green;
+}
+/* les asides sont les informations concernants le proprietaire de la carte */
+.aside{
+    height: 50%;
+    width: 100%;
+    /* border: 1px solid yellow; */
+}
+/* ajustement des proprietes de mise en forme de la carte */
+.header{
+    display: flex;
+}
+
+.header-left{
+    width: 70%;
+    padding-left: 5%;
+
+}
+.header-center{
+    width: 100%;
+    align-self: center;
+    text-align: center;
+}
+.header-right{
+    width: 70%;
+    text-align: end;
+    padding-right: 5%;
+}
+
+.span{
+    display: block;
+}
+
+.content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.aside{
+    display: flex;
+}
+
+.aside-left{
+    width: 60%;
+    /* border: 1px solid red; */
+}
+
+.aside-center{
+    width: 100%;
+}
+
+.aside-right{
+    width: 50%;
+    /* border: 1px solid red; */
+}
+
+.aside-center .article span{
+    margin: 10%;
+    padding: 1%;
+}
+
+.img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 3%;
+}
+.img-adapt{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 0 1%;
+    border-radius: 3%;
+}

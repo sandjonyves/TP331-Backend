@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carte d'Identité Scolaire</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f8f8f8;
+      height: 100vh;
+    }
+
+    .id-card {
+      width: 600px;
+      height: auto;
+      border: 2px solid #f26842;
+      padding: 20px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #f26842;
+      padding-bottom: 10px;
+    }
+
+    .header img {
+      width: 60px;
+      height: auto;
+    }
+
+    .header-title {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .header-subtitle {
+      font-size: 16px;
+      color: #444;
+      text-align: center;
+    }
+
+    .Republique, .devise {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .photo-section {
+      text-align: center;
+      margin-right: 20px;
+    }
+
+    .photo {
+      width: 200px;
+      height: 180px;
+      border: 2px solid #f26842;
+      background-color: #f8f8f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .matricule {
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .details {
+      flex-grow: 1;
+    }
+
+    .details p {
+      margin: 5px 0;
+      font-size: 16px;
+    }
+
+    .details span {
+      font-weight: bold;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #777;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="id-card">
+    <!-- Header -->
+    <div class="header">
+      <img src="{% static 'images.png' %}" alt="Logo Cameroun">
+      <div>
+        <div class="Republique">REPUBLIQUE DU CAMEROUN</div>
+        <div class="devise">Paix - Travail - Patrie</div>
+        <div class="header-title">LYCEE GANALIS</div>
+        <div class="header-subtitle">CARTE D'IDENTITÉ SCOLAIRE</div>
+      </div>
+      <img src="{% static 'R.jpg' %}" alt="Logo Établissement">
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+      <!-- Photo Section -->
+      <div class="photo-section">
+        <div class="photo">
+          <img src="{% static 'images.jpeg' %}" alt="Photo">
+        </div>
+        <div class="matricule">MAT. : {{ matricule }}</div>
+      </div>
+
+      <!-- Details Section -->
+      <div class="details">
+        <p>ANNEE SCOLAIRE : <span>{{ annee_scolaire }}</span></p>
+        <p>Nom : <span>{{ nom }}</span></p>
+        <p>Prénom : <span>{{ prenom }}</span></p>
+        <p>Né(e) le : <span>{{ date_naissance }}</span> à <span>{{ lieu_naissance }}</span></p>
+        <p>Sexe : <span>{{ sexe }}</span></p>
+        <p>Classe : <span>{{ classe }}</span></p>
+        <p>Contact : <span>{{ contact }}</span></p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+  </div>
+</body>
+</html>

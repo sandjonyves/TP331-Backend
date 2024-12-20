@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte d'Identité Scolaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f8f8;
+            height: 100vh;
+        }
+
+        .id-card {
+            width: 300px; /* Largeur de la carte */
+            height: 180px; /* Hauteur de la carte */
+            border: 2px solid #f26842;
+            padding: 5px;
+            background: linear-gradient(to right, #ff6f91, #ff8e53); /* Dégradé rose-orange */
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            color: white; /* Couleur du texte */
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header {
+            display: flex;
+            /* align-items: center; */
+            justify-content: space-between;
+            /* background: #1b3da3; */
+            /* padding: 5px 10px; */
+            border-bottom: 2px solid white;
+        }
+
+        .header img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .header .header-title {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: right;
+            flex-grow: 1;
+            margin-left: 10px;
+        }
+
+        .content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .photo {
+            width: 80px;
+            height: 80px;
+            overflow: hidden;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            margin-right: 10px;
+        }
+
+        .photo img {
+            width: 100%;
+            height: auto;
+        }
+
+        .details {
+            flex-grow: 1;
+        }
+
+        .details p {
+            margin: 2px 0;
+            font-size: 12px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 10px;
+            color: #ddd;
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="id-card">
+        <div class="header">
+            <img src="{{ school_logo }}" alt="Logo Établissement">
+            <div style="font-size: 12px; font-weight: normal;">CARTE D'IDENTITÉ SCOLAIRE</div>
+            <div class="header-title">
+                <div>{{ school_name }}</div>
+            </div>
+
+        </div>
+
+        <div class="content">
+            <div class="photo">
+                <img src="{{ student_imageUrl }}" alt="Photo de l'élève">
+            </div>
+            <div class="details">
+                <p><strong>Nom :</strong> {{ student_lastName }}</p>
+                <p><strong>Prénom :</strong> {{ student_firstName }}</p>
+                <p><strong>Classe :</strong> {{ student_classe }}</p>
+                <p><strong>Matricule :</strong> {{ student_matricule }}</p>
+                <p><strong>Date de Naissance :</strong> {{ student_dateOfBirth }}</p>
+            </div>
+        </div>
+        <div class="footer">
+            {{ current_year }} - Contact : {{ school_phone }}
+        </div>
+    </div>
+</body>
+</html>

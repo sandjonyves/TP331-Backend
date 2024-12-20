@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte d'identité scolaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .carte-scolaire {
+            width: 500px;
+            background-color: #0b1726;
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .carte-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .carte-header h1 {
+            font-size: 18px;
+            margin: 5px 0;
+        }
+
+        .carte-header img {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .carte-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .photo-eleve img {
+            width: 120px;
+            height: 120px;
+            border-radius: 5px;
+            object-fit: cover;
+            border: 2px solid #fff;
+        }
+
+        .info-eleve {
+            flex: 1;
+            margin-left: 15px;
+        }
+
+        .info-eleve p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .important {
+            font-weight: bold;
+            color: #ffcc00;
+        }
+
+        .footer {
+            text-align: left;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+
+<div class="carte-scolaire">
+    <div class="carte-header">
+        <div>
+            <img src="{% static 'images/logo.jpg' %}" alt="Logo" />
+        </div>
+        <h1>REPUBLIQUE DU CAMEROUN<br>Paix-Travail-Patrie</h1>
+        <h2>{{ eleve.etablissement }}</h2>
+        <h3 style="color: #ffcc00;">CARTE D'IDENTITE SCOLAIRE</h3>
+    </div>
+
+    <div class="carte-body">
+        <div class="photo-eleve">
+            <img src="{{ eleve.photo_url }}" alt="Photo de l'élève">
+        </div>
+        <div class="info-eleve">
+            <p><span class="important">Année scolaire:</span> {{ eleve.annee_scolaire }}</p>
+            <p><span class="important">Nom:</span> {{ eleve.nom }}</p>
+            <p><span class="important">Prénom:</span> {{ eleve.prenom }}</p>
+            <p><span class="important">Date Naissance:</span> {{ eleve.date_naissance }}</p>
+            <p><span class="important">Matricule:</span> {{ eleve.matricule }}</p>
+            <p><span class="important">Sexe:</span> {{ eleve.sexe }}</p>
+            <p><span class="important">Classe:</span> {{ eleve.classe }}</p>
+            <p><span class="important">Lieu:</span> {{ eleve.lieu }}</p>
+            <p><span class="important">Téléphone :</span> <span style="color: #ffcc00;">{{ eleve.telephone }}</span></p>
+        </div>
+    </div>
+
+    <div class="footer">
+        Adresse: <span>--------------------------</span>
+    </div>
+</div>
+
+</body>
+</html>

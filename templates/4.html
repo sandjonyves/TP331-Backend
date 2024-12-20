@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte d'identité scolaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #f0f0f0;
+        }
+
+        .card {
+            width: 85mm; /* Largeur de la carte de visite */
+            height: 54mm; /* Hauteur de la carte de visite */
+            background: white;
+            color: #333;
+            padding: 10px;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .school-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        .school-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .card-title {
+            background: #FCD116;
+            color: black;
+            text-align: center;
+            padding: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .photo-section {
+            display: flex;
+            gap: 10px;
+        }
+
+        .photo {
+            width: 50px;
+            height: 70px;
+            border: 1px solid #ddd;
+            background: #f8f8f8;
+            overflow: hidden;
+        }
+
+        .photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .info {
+            flex: 1;
+            font-size: 10px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2px;
+            border-bottom: 1px dotted #ddd;
+            padding-bottom: 2px;
+        }
+
+        .label {
+            font-weight: 500;
+        }
+
+        .value {
+            color: #CE1126;
+            font-weight: bold;
+        }
+
+        .address {
+            margin-top: 5px;
+            font-size: 10px;
+            border-top: 1px solid #ddd;
+            padding-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <div class="header">
+            <div class="school-logo">
+                <img src="{{ school_logo }}" alt="Logo école">
+            </div>
+            <div class="title">
+                REPUBLIQUE DU CAMEROUN<br>
+                Paix-Travail-Patrie<br>
+                COLLEGE POLYVALENT LA METHODE DE<br>
+                M.NANA
+            </div>
+        </div>
+
+        <div class="card-title">CARTE D'IDENTITE SCOLAIRE</div>
+
+        <div class="photo-section">
+            <div class="photo">
+                <img src="{{ student_imageUrl }}" alt="Photo d'identité">
+            </div>
+            <div class="info">
+                <div class="info-row">
+                    <span class="label">Matricule:</span>
+                    <span class="value">{{ student_matricule }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Nom:</span>
+                    <span class="value">{{ student_lastName }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Prénom:</span>
+                    <span class="value">{{ student_firstName }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Date Naissance:</span>
+                    <span class="value">{{ student_dateOfBirth }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">SEXE:</span>
+                    <span class="value">{{ student_sexe }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Classe:</span>
+                    <span class="value">{{ student_classe }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Année:</span>
+                    <span class="value">{{ academic_year }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Téléphone:</span>
+                    <span class="value">{{ school_phone }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="address">
+            Adresse :<br>
+            Téléphone Parent : {{ school_phone }}
+        </div>
+    </div>
+</body>
+</html>

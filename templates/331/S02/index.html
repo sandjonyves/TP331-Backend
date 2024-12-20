@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte Étudiant</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: #f0f0f0;
+        }
+        .container {
+            height: 54mm; /* Hauteur de la carte de visite */
+            width: 85mm; /* Largeur de la carte de visite */
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+            border: 1px solid rgb(8, 8, 8);
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            font-size: 9px; /* Réduction de la taille de la police */
+        }
+        .header {
+            height: 30%;
+            width: 100%;
+            display: flex;
+            background-color: rgb(235, 142, 21);
+            color: aliceblue;
+            align-items: center;
+            padding: 5px;
+        }
+        .header-left {
+            width: 20%;
+            padding: 5px;
+            background-color: aliceblue;
+            text-align: center;
+            font-weight: bold;
+        }
+        .header-center {
+            width: 60%;
+            text-align: center;
+            font-weight: 400;
+        }
+        .content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 10px; /* Taille de police ajustée */
+        }
+        .aside {
+            display: flex;
+            width: 100%;
+            flex-grow: 1;
+        }
+        .aside-left {
+            width: 40%;
+            padding: 5px;
+        }
+        .aside-center {
+            width: 60%;
+            padding: 5px;
+        }
+        .img-adapt {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .article {
+            display: flex;
+            justify-content: space-between;
+            margin: 3px 0;
+            font-size: 8px; /* Taille de police pour les détails */
+        }
+        .footer {
+            background-color: rgb(204, 80, 8);
+            height: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 8px; /* Taille de police pour le pied de page */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <img src="{{ school_logo }}" alt="Logo École" style="width: 50px; height: 50px;">
+            </div>
+            <div class="header-center">
+                <span class="span">{{ school_name }}</span><br>
+                <span class="span">{{ school_address }}</span>
+            </div>
+        </div>
+        <div class="content">
+            <span class="span">CARTE D'IDENTITÉ</span>
+        </div>
+        <div class="aside">
+            <div class="aside-left">
+                <img src="{{ student_imageUrl }}" class="img-adapt" alt="Photo Étudiant">
+                <span class="span">{{ academic_year }}</span>
+            </div>
+            <div class="aside-center">
+                <div class="article"><span>Nom :</span><span>{{ student_last_name }}</span></div>
+                <div class="article"><span>Prénom :</span><span>{{ student_first_name }}</span></div>
+                <div class="article"><span>Date de naissance :</span><span>{{ student_date_of_birth }}</span></div>
+                <div class="article"><span>Classe :</span><span>{{ student_class }}</span></div>
+                <div class="article"><span>Matricule :</span><span>{{ student_matricule }}</span></div>
+            </div>
+        </div>
+        <div class="footer">
+            <span>Contact: {{ school_phone }}</span>
+        </div>
+    </div>
+</body>
+</html>
