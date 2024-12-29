@@ -2,9 +2,15 @@ from django.db import models
 from account.models import CustomUser
 # Create your models here.
 
+
+
+
+
+
 class School(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,related_name='shool')
     name = models.CharField(max_length=128)
+    
     # devise = models.CharField(max_length=255)
     phone = models.CharField(max_length=255)
     logo_url = models.CharField(max_length=255)
@@ -34,7 +40,7 @@ class Classe(models.Model):
 
 class Student(models.Model):
     # Relations
-    classe = models.ForeignKey(
+    classe_id = models.ForeignKey(
         'Classe',
         on_delete=models.CASCADE,
         related_name='students'
@@ -88,7 +94,9 @@ class Card(models.Model):
         return self.student.matricule
     
 
+    # school_id = models.IntegerField(unique=True,null=True,blank=True)
+
 class CardPrototype(models.Model):
+    school_choice = models.ManyToManyField(School,related_name='prototype' ,blank=True)
     image =models.CharField(max_length=256)
     choice = models.BooleanField(default=False)
-    # school_id = models.IntegerField(unique=True,null=True,blank=True)

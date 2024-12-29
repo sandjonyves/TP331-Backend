@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import environ
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api	
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -169,6 +172,12 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": env('CLOUD_NAME', default="dq0yejiao"),
-    "API_KEY": env('API_KEY', default="628388197591769"),
+    "API_KEY": env('CLOUD_NAME', default="dq0yejiao"),
     "API_SECRET": env('API_SECRET', default="vHmzgBz3m40fx8ZGiSnNgpiTbjo")
 }
+
+cloudinary.config(
+    cloud_name='dqripzmub',
+    api_key='823258548877399',
+    api_secret='DkJfCIKqPz5wx8M2nItxGP-tKNA',
+)

@@ -131,60 +131,59 @@ class CardViewSet(viewsets.ModelViewSet):
 class CustomStudentView(viewsets.generics.CreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = CustomUserSerializer
+
     def post(self, request):
-       
-        csv_file = request.FILES.get('file')
-        if not csv_file:
-            return Response({"error": "Aucun fichier n'a été fourni."}, status=status.HTTP_400_BAD_REQUEST)
+        # Récupération des données JSON envoyées
+        students_data = request.data.get('students')  # Les étudiants sont envoyés sous forme de JSON
+        classe_id = request.data.get('class_id')  # L'ID de la classe est envoyé
 
-        # Vérifiez que le fichier a une extension CSV
-        if not csv_file.name.endswith('.csv'):
-            return Response({"error": "Le fichier n'est pas un fichier CSV."}, status=status.HTTP_400_BAD_REQUEST)
+        # Vérification de la présence des données
+        if not students_data:
+            return Response({"error": "Aucune donnée d'étudiant n'a été fournie."}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Vérification de la présence de la classe
         try:
-            # Décodage et lecture du fichier CSV
-            decoded_file = csv_file.read().decode('utf-8')
-            io_string = io.StringIO(decoded_file)
-            reader = csv.DictReader(io_string)
+            classe = Classe.objects.get(id=int(classe_id))
+        except Classe.DoesNotExist:
+            return Response({"error": "Classe introuvable."}, status=status.HTTP_404_NOT_FOUND)
 
-            # Validation des colonnes attendues
-            expected_columns = {'matricule', 'firstName', 'lastName', 'date_of_birth', 'classe_id'}
-            if not expected_columns.issubset(reader.fieldnames):
-                return Response(
-                    {"error": f"Les colonnes du fichier CSV doivent inclure : {', '.join(expected_columns)}."},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
+        errors = []
 
-       
-            for row in reader:
-               
-                try:
-                    print(row['classe_id'])
-                    classe = Classe.objects.get(id=1)
-                    print(classe)
-                except Classe.DoesNotExist:
-                    return Response(
-                        {"error": f"Classe avec ID {row['classe_id']} introuvable."},
-                        status=status.HTTP_400_BAD_REQUEST,
-                    )
-             
+        # Traitement des données des étudiants envoyées
+        for row_number, student_data in enumerate(students_data, start=1):
+            try:
+                # Validation des champs requis
+                matricule = student_data.get('matricule', '').strip()
+                firstName = student_data.get('firstName', '').strip()
+                lastName = student_data.get('lastName', '').strip()
+                date_of_birth = student_data.get('date_of_birth', '').strip()
+
+                if not all([matricule, firstName, lastName, date_of_birth]):
+                    errors.append(f"Ligne {row_number}: Données manquantes (matricule, prénom, nom ou date de naissance).")
+                    continue
+
+                # Création de l'étudiant
                 Student.objects.create(
-                    matricule=row['matricule'].strip(),
-                    firstName=row['firstName'].strip(),
-                    lastName=row['lastName'].strip(),
-                    date_of_birth=row['date_of_birth'].strip(),
-                    classe=Classe.objects.get(id=1),
+                    matricule=matricule,
+                    firstName=firstName,
+                    lastName=lastName,
+                    date_of_birth=date_of_birth,
+                    classe_id=classe,
                 )
+            except Exception as e:
+                # Ajouter l'erreur pour chaque étudiant
+                errors.append(f"Ligne {row_number}: {str(e)}")
 
-            return Response({"message": "Fichier CSV traité avec succès."}, status=status.HTTP_201_CREATED)
+        # Vérification des erreurs
+        if errors:
+            return Response(
+                {"message": "Le fichier a été partiellement traité.", "errors": errors},
+                status=status.HTTP_206_PARTIAL_CONTENT,
+            )
 
-        except csv.Error as e:
-            print(e)
-            return Response({"error": f"Erreur de traitement du fichier CSV : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-          
-            print(f"Erreur lors du traitement du fichier CSV : {e}")
-            return Response({"error": f"Erreur serveur : {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({"message": "Données traitées avec succès."}, status=status.HTTP_201_CREATED)
+
+
 
 
 
@@ -196,18 +195,60 @@ class CardPrototypeView(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'], url_path='set-choice')
     def set_choice(self, request, pk=None):
         try:
+            # Récupération de l'instance actuelle
             instance = self.get_object()
 
-            # Met à jour tous les autres objets pour désactiver le choix
-            CardPrototype.objects.exclude(pk=instance.pk).update(choice=False)
+            # Vérifiez que l'identifiant de l'établissement est passé dans les données de la requête
+            school_id = request.data.get('school_id')
+            if school_id is None:
+                return Response({"error": "School ID is required."}, status=status.HTTP_400_BAD_REQUEST)
 
-            # Active le choix pour l'instance actuelle
+            # Vérifiez si l'école existe
+            try:
+                school = School.objects.get(id=school_id)
+            except School.DoesNotExist:
+                return Response({"error": "Invalid school ID."}, status=status.HTTP_404_NOT_FOUND)
+
+            # Associer l'école au prototype
+            instance.school_choice.add(school)
             instance.choice = True
             instance.save()
 
             return Response({"message": "Choice successfully updated"}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+    @action(detail=True, methods=['post'], url_path='set-Unchoice')
+    def set_Unchoice(self, request, pk=None):
+        try:
+            # Récupération de l'instance actuelle
+            instance = self.get_object()
+
+            # Vérification de la présence de `school_id` dans les données de la requête
+            school_id = request.data.get('school_id')
+            if not school_id:
+                return Response({"error": "School ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Vérification de l'existence de l'école
+            try:
+                school = School.objects.get(id=school_id)
+            except School.DoesNotExist:
+                return Response({"error": "Invalid school ID."}, status=status.HTTP_404_NOT_FOUND)
+
+            # Suppression de l'école de `school_choice`
+            if school in instance.school_choice.all():
+                instance.school_choice.remove(school)
+                instance.choice = False
+                instance.save()
+                return Response({"message": "Choice successfully updated."}, status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "The school is not in the current choices."}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            # Capture d'erreurs non anticipées
+            return Response({"error": f"An unexpected error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
     @action(detail=False, methods=['get'], url_path='get-choice')
     def get_choice(self, request):
@@ -231,19 +272,14 @@ from weasyprint import HTML, CSS
 from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
 from .models import Student, CardPrototype
+import cloudinary.uploader
+
+
 
 class RenderPDFView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        # Récupérer le template par défaut
-        try:
-            template_choice = CardPrototype.objects.get(choice=True)
-        except CardPrototype.DoesNotExist:
-            return Response({'error': 'Template non trouvé.'}, status=404)
-
-        # Récupérer les données de la requête
-        template_name = request.data.get('template_name', f'3.html')
         student_id = request.data.get('student_id')
         image_url = request.data.get('image_url')
 
@@ -253,7 +289,25 @@ class RenderPDFView(APIView):
                 status=400
             )
 
-        # Vérification du chargement de l'image (timer)
+        # Récupérer l'étudiant
+        try:
+            student = Student.objects.get(id=student_id)
+        except Student.DoesNotExist:
+            return Response({'error': 'Étudiant non trouvé.'}, status=404)
+
+        # Récupérer la classe et l'école de l'étudiant
+        try:
+            student_classe = student.classe_id
+            student_school = student_classe.school
+        except AttributeError:
+            return Response({'error': 'Classe ou école non trouvée pour l’étudiant.'}, status=404)
+
+        # Récupérer le prototype associé à l'école
+        prototype = student_school.prototype.filter(choice=True).first()
+        if not prototype:
+            return Response({'error': 'Template non trouvé pour cette école.'}, status=404)
+
+        # Vérification de l'accessibilité de l'image
         max_wait_time = 10  # Temps d'attente maximum en secondes
         start_time = time.time()
         image_loaded = False
@@ -271,19 +325,6 @@ class RenderPDFView(APIView):
         if not image_loaded:
             return Response({'error': "L'image n'est pas accessible après 10 secondes."}, status=408)
 
-        # Récupérer les informations de l'étudiant
-        try:
-            student = Student.objects.get(id=student_id)
-        except Student.DoesNotExist:
-            return Response({'error': 'Étudiant non trouvé.'}, status=404)
-
-        # Récupérer la classe et l'école associées
-        try:
-            student_classe = student.classe
-            student_school = student_classe.school
-        except AttributeError:
-            return Response({'error': 'Classe ou école non trouvée.'}, status=404)
-        print(response)
         # Contexte pour le rendu du PDF
         context = {
             'student_matricule': student.matricule,
@@ -291,7 +332,7 @@ class RenderPDFView(APIView):
             'student_lastName': student.lastName,
             'student_dateOfBirth': student.date_of_birth,
             'student_sexe': student.sexe,
-            'student_imageUrl':image_url,
+            'student_imageUrl': image_url,
             'student_classe': student_classe.name,
             'school_logo': student_school.logo_url,
             'school_name': student_school.name,
@@ -299,37 +340,50 @@ class RenderPDFView(APIView):
             'school_phone': student_school.phone,
         }
 
+        # Rendu HTML
+        template_name = request.data.get('template_name', f'{student_school.id}.html')
         try:
-            # Rendre le contenu HTML
             html_string = render_to_string(template_name, context)
         except Exception as e:
             return Response({'error': f"Erreur lors du rendu du template : {str(e)}"}, status=500)
 
-        # Générer le PDF
-        css = CSS(string='''
-            @page {
-                size: 95.6mm 60mm; /* Taille d'une carte d'identité */
-                margin: 0; /* Pas de marges */
-            }
-        ''')
-        html = HTML(string=html_string)
-        pdf = html.write_pdf(stylesheets=[css])
+        # Génération du PDF
+        try:
+            css = CSS(string='''
+                @page {
+                    size: 95.6mm 60mm; /* Taille d'une carte d'identité */
+                    margin: 0; /* Pas de marges */
+                }
+            ''')
+            html = HTML(string=html_string)
+            pdf = html.write_pdf(stylesheets=[css])
+        except Exception as e:
+            return Response({'error': f"Erreur lors de la génération du PDF : {str(e)}"}, status=500)
 
-        # Enregistrer le PDF
-        fs = FileSystemStorage()
-        pdf_filename = f'carde_{student_id}.pdf'
-        pdf_path = fs.save(pdf_filename, ContentFile(pdf))
-        pdf_url = fs.url(pdf_path)
+        # Téléchargement du PDF sur Cloudinary
+        try:
+            upload_result = cloudinary.uploader.upload(
+                ContentFile(pdf),
+                resource_type='raw',
+                public_id=f'card_{student_id}',
+                overwrite=True  # Remplace le fichier s'il existe déjà
+            )
+            pdf_url = upload_result['secure_url']
+        except Exception as e:
+            return Response({'error': f"Erreur lors du téléchargement vers Cloudinary : {str(e)}"}, status=500)
 
-        # Mettre à jour les informations de l'étudiant
-        student.card_file = pdf_path
-        student.image_url = image_url
-        student.save()
+        # Mise à jour des informations de l'étudiant
+        try:
+            student.card_file = pdf_url  # Stocke l'URL dans le modèle
+            student.image_url = image_url
+            student.save()
+        except Exception as e:
+            return Response({'error': f"Erreur lors de la mise à jour de l'étudiant : {str(e)}"}, status=500)
 
-        # Réponse
+        # Réponse finale
         response_data = {
             'message': 'PDF généré avec succès.',
-            'pdf_url': request.build_absolute_uri(pdf_url),
+            'pdf_url': pdf_url,
             'student': {
                 'id': student.id,
                 'first_name': student.firstName,
@@ -345,3 +399,24 @@ class RenderPDFView(APIView):
 # "student_id":1,
 # "image_url":"https://res.cloudinary.com/dqripzmub/image/upload/v1734609398/na5zmquouwqfqbbguwm8.jpg"
 # }
+
+@action(detail=True, methods=['post'], url_path='set-choice')
+def set_choice(self, request, pk=None):
+    try:
+        instance = self.get_object()
+
+        # Vérifiez que l'identifiant de l'établissement est passé dans les données de la requête
+        school_id = request.data.get('school_choice')
+        if not school_id is None:
+            return Response({"error": "School ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+      
+
+        # Activer le choix pour l'instance actuelle et définir la liste d'identifiants d'établissements
+        instance.choice = True
+        instance.school_choice.append(school_id) 
+        instance.save()
+
+        return Response({"message": "Choice successfully updated"}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

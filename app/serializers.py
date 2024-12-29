@@ -1,9 +1,6 @@
 from rest_framework import serializers
 from .models import School, Classe, Student ,Card,CardPrototype
-class SchoolSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = School
-        fields = '__all__'
+
 
 class ClasseSerializer(serializers.ModelSerializer):
     class Meta:
@@ -43,3 +40,23 @@ class CustomUserSerializer(serializers.Serializer):
 
 class CardGenerateSerializer(serializers.Serializer):
     template_name =  serializers.CharField()
+
+
+class SchoolSerializer(serializers.ModelSerializer):
+    prototypes = CardPrototypeSerializer(many=True,read_only=True, source='prototype')
+
+    class Meta:
+        model = School
+        fields = [
+            'id',                 # Identifiant de l'établissement
+            'name',               # Nom de l'établissement
+            'phone',              # Numéro de téléphone
+            'logo_url',           # URL du logo
+            'academic_year',      # Année académique
+            'devise',             # Devise
+            'contact',            # Contact
+            'logo',               # Logo
+            'cachet',             # Cachet
+            'signature_principale', # Signature principale
+            'prototypes'          # Prototypes de carte associés
+        ]
