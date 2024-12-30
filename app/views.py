@@ -274,8 +274,6 @@ from django.core.files.storage import FileSystemStorage
 from .models import Student, CardPrototype
 import cloudinary.uploader
 
-
-
 class RenderPDFView(APIView):
     permission_classes = [AllowAny]
 
@@ -289,25 +287,27 @@ class RenderPDFView(APIView):
                 status=400
             )
 
-        # Récupérer l'étudiant
         try:
             student = Student.objects.get(id=student_id)
         except Student.DoesNotExist:
             return Response({'error': 'Étudiant non trouvé.'}, status=404)
 
-        # Récupérer la classe et l'école de l'étudiant
         try:
             student_classe = student.classe_id
             student_school = student_classe.school
         except AttributeError:
             return Response({'error': 'Classe ou école non trouvée pour l’étudiant.'}, status=404)
 
-        # Récupérer le prototype associé à l'école
-        prototype = student_school.prototype.filter(choice=True).first()
-        if not prototype:
+        try:
+            print( student_school.id)
+            # Filtrer les prototypes correspondant à l'école de l'étudiant
+            prototype = student_school.prototype.filter(choice=True).first()
+            if not prototype:
+                raise CardPrototype.DoesNotExist
+        except CardPrototype.DoesNotExist:
             return Response({'error': 'Template non trouvé pour cette école.'}, status=404)
 
-        # Vérification de l'accessibilité de l'image
+        # Vérification du chargement de l'image (timer)
         max_wait_time = 10  # Temps d'attente maximum en secondes
         start_time = time.time()
         image_loaded = False
@@ -340,7 +340,6 @@ class RenderPDFView(APIView):
             'school_phone': student_school.phone,
         }
 
-        # Rendu HTML
         template_name = request.data.get('template_name', f'{student_school.id}.html')
         try:
             html_string = render_to_string(template_name, context)
@@ -348,42 +347,30 @@ class RenderPDFView(APIView):
             return Response({'error': f"Erreur lors du rendu du template : {str(e)}"}, status=500)
 
         # Génération du PDF
-        try:
-            css = CSS(string='''
-                @page {
-                    size: 95.6mm 60mm; /* Taille d'une carte d'identité */
-                    margin: 0; /* Pas de marges */
-                }
-            ''')
-            html = HTML(string=html_string)
-            pdf = html.write_pdf(stylesheets=[css])
-        except Exception as e:
-            return Response({'error': f"Erreur lors de la génération du PDF : {str(e)}"}, status=500)
+        css = CSS(string='''
+            @page {
+                size: 95.6mm 60mm; /* Taille d'une carte d'identité */
+                margin: 0; /* Pas de marges */
+            }
+        ''')
+        html = HTML(string=html_string)
+        pdf = html.write_pdf(stylesheets=[css])
 
-        # Téléchargement du PDF sur Cloudinary
-        try:
-            upload_result = cloudinary.uploader.upload(
-                ContentFile(pdf),
-                resource_type='raw',
-                public_id=f'card_{student_id}',
-                overwrite=True  # Remplace le fichier s'il existe déjà
-            )
-            pdf_url = upload_result['secure_url']
-        except Exception as e:
-            return Response({'error': f"Erreur lors du téléchargement vers Cloudinary : {str(e)}"}, status=500)
+        # Enregistrement du PDF
+        fs = FileSystemStorage()
+        pdf_filename = f'card_{student_id}.pdf'
+        pdf_path = fs.save(pdf_filename, ContentFile(pdf))
+        pdf_url = fs.url(pdf_path)
 
         # Mise à jour des informations de l'étudiant
-        try:
-            student.card_file = pdf_url  # Stocke l'URL dans le modèle
-            student.image_url = image_url
-            student.save()
-        except Exception as e:
-            return Response({'error': f"Erreur lors de la mise à jour de l'étudiant : {str(e)}"}, status=500)
+        student.card_file = pdf_path
+        student.image_url = image_url
+        student.save()
 
-        # Réponse finale
+        # Réponse
         response_data = {
             'message': 'PDF généré avec succès.',
-            'pdf_url': pdf_url,
+            'pdf_url': request.build_absolute_uri(pdf_url),
             'student': {
                 'id': student.id,
                 'first_name': student.firstName,
