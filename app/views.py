@@ -156,6 +156,7 @@ class CustomStudentView(viewsets.generics.CreateAPIView):
                 matricule = student_data.get('matricule', '').strip()
                 firstName = student_data.get('firstName', '').strip()
                 lastName = student_data.get('lastName', '').strip()
+                sexe = student_data.get('sexe', '').strip()
                 date_of_birth = student_data.get('date_of_birth', '').strip()
 
                 if not all([matricule, firstName, lastName, date_of_birth]):
@@ -167,6 +168,7 @@ class CustomStudentView(viewsets.generics.CreateAPIView):
                     matricule=matricule,
                     firstName=firstName,
                     lastName=lastName,
+                    sexe =sexe,
                     date_of_birth=date_of_birth,
                     classe_id=classe,
                 )
@@ -381,6 +383,115 @@ class RenderPDFView(APIView):
 
         return Response(response_data, status=201)
 
+
+
+class RenderSinglePDFView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        prototype = request.data.get('prototy')
+        student_id = request.data.get('student_id')
+        image_url = request.data.get('image_url')
+
+        if not student_id or not image_url:
+            return Response(
+                {'error': 'Les champs student_id et image_url sont requis.'},
+                status=400
+            )
+
+        try:
+            student = Student.objects.get(id=student_id)
+        except Student.DoesNotExist:
+            return Response({'error': 'Étudiant non trouvé.'}, status=404)
+
+        try:
+            student_classe = student.classe_id
+            student_school = student_classe.school
+        except AttributeError:
+            return Response({'error': 'Classe ou école non trouvée pour l’étudiant.'}, status=404)
+
+        try:
+            print( student_school.id)
+            # Filtrer les prototypes correspondant à l'école de l'étudiant
+            prototype = student_school.prototype.filter(choice=True).first()
+            if not prototype:
+                raise CardPrototype.DoesNotExist
+        except CardPrototype.DoesNotExist:
+            return Response({'error': 'Template non trouvé pour cette école.'}, status=404)
+
+        # Vérification du chargement de l'image (timer)
+        max_wait_time = 10  # Temps d'attente maximum en secondes
+        start_time = time.time()
+        image_loaded = False
+
+        while time.time() - start_time < max_wait_time:
+            try:
+                response = requests.head(image_url)
+                if response.status_code == 200:
+                    image_loaded = True
+                    break
+            except requests.RequestException:
+                pass  # Ignorer les erreurs momentanées
+            time.sleep(1)  # Attendre 1 seconde avant de réessayer
+
+        if not image_loaded:
+            return Response({'error': "L'image n'est pas accessible après 10 secondes."}, status=408)
+
+        # Contexte pour le rendu du PDF
+        context = {
+            'student_matricule': student.matricule,
+            'student_firstName': student.firstName,
+            'student_lastName': student.lastName,
+            'student_dateOfBirth': student.date_of_birth,
+            'student_sexe': student.sexe,
+            'student_imageUrl': image_url,
+            'student_classe': student_classe.name,
+            'school_logo': student_school.logo_url,
+            'school_name': student_school.name,
+            'academic_year': student_school.academic_year,
+            'school_phone': student_school.phone,
+        }
+
+        template_name = request.data.get('template_name', f'{student_school.id}.html')
+        try:
+            html_string = render_to_string(template_name, context)
+        except Exception as e:
+            return Response({'error': f"Erreur lors du rendu du template : {str(e)}"}, status=500)
+
+        # Génération du PDF
+        css = CSS(string='''
+            @page {
+                size: 95.6mm 60mm; /* Taille d'une carte d'identité */
+                margin: 0; /* Pas de marges */
+            }
+        ''')
+        html = HTML(string=html_string)
+        pdf = html.write_pdf(stylesheets=[css])
+
+        # Enregistrement du PDF
+        fs = FileSystemStorage()
+        pdf_filename = f'card_{student_id}.pdf'
+        pdf_path = fs.save(pdf_filename, ContentFile(pdf))
+        pdf_url = fs.url(pdf_path)
+
+        # Mise à jour des informations de l'étudiant
+        student.card_file = pdf_path
+        student.image_url = image_url
+        student.save()
+
+        # Réponse
+        response_data = {
+            'message': 'PDF généré avec succès.',
+            'pdf_url': request.build_absolute_uri(pdf_url),
+            'student': {
+                'id': student.id,
+                'first_name': student.firstName,
+                'last_name': student.lastName,
+                'image_url': student.image_url,
+            }
+        }
+
+        return Response(response_data, status=201)
 
 # {
 # "student_id":1,
